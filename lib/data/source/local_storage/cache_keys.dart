@@ -1,0 +1,4 @@
+enum CacheKey {
+  theme,
+  apiToken,
+}

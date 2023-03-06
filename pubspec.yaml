@@ -30,6 +30,16 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  bloc: ^8.0.0 # state management: bloc pattern
+  flutter_bloc: ^8.0.0 # state management: bloc pattern
+  equatable: ^2.0.5 # auto override equals and hash code for a class
+  get_it: ^7.2.0 # singleton pattern, dependency injection pattern 
+  shared_preferences: ^2.0.18 # local storage for caching
+  sizer: ^2.0.15 # auto responsive, adaptive app
+  dio: ^5.0.1 # http util
+  flutter_svg: ^2.0.2 # render svg image
+  cached_network_image: ^3.2.3 # load and cache network image
+  intl: ^0.18.0 # format data
 
 
   # The following adds the Cupertino Icons font to your application.
