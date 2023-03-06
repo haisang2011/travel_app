@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:travel_app/bloc/common_bloc/common_bloc.dart';
 import 'package:travel_app/bloc/observer.dart';
 import 'package:travel_app/data/di/config.dart';
@@ -9,6 +8,7 @@ import 'package:travel_app/data/source/network/http_overrides.dart';
 import 'package:travel_app/routes/router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sizer/sizer.dart';
 import 'package:travel_app/themes/default.dart';
 
 void main() async {
@@ -31,7 +31,7 @@ class App extends StatelessWidget {
       ],
       child: BlocBuilder<CommonBloc, CommonState>(
         builder: (context, state) {
-          return ResponsiveSizer(builder: (context, orientation, deviceType) {
+          return Sizer(builder: (context, orientation, deviceType) {
             return MaterialApp(
               theme: theme,
               debugShowCheckedModeBanner: false,
