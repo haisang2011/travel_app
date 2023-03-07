@@ -40,6 +40,7 @@ dependencies:
   flutter_svg: ^2.0.2 # render svg image
   cached_network_image: ^3.2.3 # load and cache network image
   intl: ^0.18.0 # format data
+  smooth_page_indicator: ^1.0.1 # Using for Page View
 
 
   # The following adds the Cupertino Icons font to your application.
