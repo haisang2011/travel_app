@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/services.dart';
 import 'package:travel_app/bloc/common_bloc/common_bloc.dart';
 import 'package:travel_app/bloc/observer.dart';
 import 'package:travel_app/data/di/config.dart';
@@ -17,7 +18,9 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   initSingletons();
   await getIt<LocalStorage>().initSharedPreferences();
-  runApp(const App());
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]).then(
+    (_) => runApp(const App()),
+  );
 }
 
 class App extends StatelessWidget {
