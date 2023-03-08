@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:travel_app/constants/colors.dart';
+import 'package:travel_app/constants/dismension.dart';
 
 var theme = ThemeData.light().copyWith(
   colorScheme: const ColorScheme.light(
@@ -46,4 +47,39 @@ var theme = ThemeData.light().copyWith(
     borderColor: Colors.transparent,
     fillColor: Colors.transparent,
   ),
+  textTheme: ThemeData.light().textTheme.copyWith(
+        titleLarge: TextStyle(
+          fontSize: Sizes.titleLgSize,
+          fontWeight: FontWeight.w500,
+          color: ColorPalette.fontBlackColor,
+        ),
+        titleSmall: TextStyle(
+          fontSize: Sizes.titleSmSize,
+          fontWeight: FontWeight.bold,
+          color: ColorPalette.fontBlackColor,
+        ),
+        titleMedium: TextStyle(
+          fontSize: Sizes.titleMdSize,
+          color: ColorPalette.fontBlackColor,
+          fontWeight: FontWeight.w500,
+        ),
+        bodySmall: TextStyle(
+          fontSize: Sizes.fontSmSize,
+          color: ColorPalette.fontBlackColor,
+        ),
+        bodyMedium: TextStyle(
+          fontSize: Sizes.fontMdSize,
+          color: ColorPalette.fontBlackColor,
+        ),
+        labelLarge: TextStyle(
+          fontSize: Sizes.fontLgSize,
+          fontWeight: FontWeight.w500,
+          color: ColorPalette.fontBlackColor,
+        ),
+        labelMedium: TextStyle(
+          fontSize: Sizes.fontMdSize,
+          fontWeight: FontWeight.bold,
+          color: ColorPalette.fontBlackColor,
+        ),
+      ),
 );
