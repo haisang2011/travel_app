@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
+import 'package:travel_app/constants/dismension.dart';
 import '../constants/colors.dart';
 
 class CustomButton extends StatelessWidget {
@@ -28,7 +29,8 @@ class CustomButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final borderRadius = this.borderRadius ?? BorderRadius.circular(21.sp);
+    final borderRadius =
+        this.borderRadius ?? BorderRadius.circular(Sizes.radiusLgSize);
     final height = this.height ?? 5.h;
     return Container(
       width: width,
