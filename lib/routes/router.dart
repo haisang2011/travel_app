@@ -2,6 +2,7 @@ import 'package:travel_app/routes/page_route_transition.dart';
 import 'package:travel_app/screens/detail_hotel/detail_hotel_screen.dart';
 import 'package:travel_app/screens/home/home_screen.dart';
 import 'package:travel_app/screens/result_hotel/result_hotel_screen.dart';
+import 'package:travel_app/screens/introdution/intro_screen.dart';
 import 'package:travel_app/screens/splash/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'routes.dart' as routes;
@@ -28,7 +29,12 @@ class AppRouter {
       case routes.detailHotelRoute:
         return PageRouteTransition(
           direction: AxisDirection.left,
-          child: const DetailHotelScreen(),
+          child: const DetailHotelScreen()
+        );
+      case routes.introduceRoute:
+        return PageRouteTransition(
+          direction: AxisDirection.left, 
+          child: const IntroScreen()
         );
       default:
         return null;
