@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sizer/sizer.dart';
 import 'package:travel_app/constants/colors.dart';
 import 'package:travel_app/constants/dismension.dart';
 
@@ -18,17 +19,15 @@ class CustomTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     final borderRadius = this.borderRadius ?? const BorderRadius.all(Radius.circular(12));
     return TextField(
-
+      style: TextStyle(fontSize: Sizes.fontMdSize),
       decoration:
           InputDecoration(
             labelText: hintText,
-            labelStyle: const TextStyle(fontSize: kDefaultFontSize),
-            prefixIcon: Padding(
-              padding: const EdgeInsets.only(left: 12.0, right: 12.0),
-              child: prefixIcon,
-            ),
-            prefixIconConstraints: const BoxConstraints(minHeight: 45, minWidth: 45),
+            labelStyle: TextStyle(fontSize: Sizes.fontMdSize),
+            prefixIcon: prefixIcon,
+            prefixIconColor: ColorPalette.fontGreyColor,
             border: OutlineInputBorder(borderRadius: borderRadius),
+            contentPadding: EdgeInsets.symmetric(horizontal: 4.sp, vertical: 8.sp),
             enabledBorder: OutlineInputBorder(
               borderSide: const BorderSide(width: 0),
               borderRadius: borderRadius
@@ -39,7 +38,7 @@ class CustomTextField extends StatelessWidget {
             ),
             filled: true,
             fillColor: ColorPalette.whiteColor,
-            floatingLabelBehavior: FloatingLabelBehavior.never
+            floatingLabelBehavior: FloatingLabelBehavior.never,
           ),
     );
   }

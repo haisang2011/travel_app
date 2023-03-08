@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:sizer/sizer.dart';
-import 'package:travel_app/constants/dismension.dart';
 import 'package:travel_app/constants/images.dart';
 import 'package:travel_app/widgets/app_header.dart';
 import 'package:travel_app/screens/result_hotel/widgets/hotel_list.dart';

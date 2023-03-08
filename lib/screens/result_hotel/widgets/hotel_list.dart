@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:sizer/sizer.dart';
 import 'package:travel_app/constants/dismension.dart';
 import 'package:travel_app/screens/result_hotel/widgets/hotel_card.dart';
 
