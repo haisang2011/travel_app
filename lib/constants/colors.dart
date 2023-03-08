@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class ColorPalette {
   static const primaryColor = Color(0xff8F67E8);
   static const secondaryColor = Color(0xff6357CC);
+  static const thirdColor = Color(0xff6155CC);
   static const whiteColor = Color(0xffFFFFFF);
   static const blackColor = Color(0xff000000);
   static const backgroundColor = Color(0xffF0F2F6);
@@ -17,4 +18,16 @@ class ColorPalette {
   static const indigoColor = Color(0xff6155CC);
   static const atomicTangerineColor = Color(0xffFE9C5E);
   static const turquoiseColor = Color(0xff34C9BD);
+  static const yellowColor = Color(0xffFE9C5E);
+  static const redColor = Color(0xffF77777);
+  static const greenColor = Color(0xff3EC8BC);
+  static const backgroundScaffoldColor = Color(0xffF2F2F2);
+  static const titleTextColor = Color(0xff313131);
+}
+
+class Gradients {
+  static const defaultGradient = LinearGradient(
+      begin: Alignment.topLeft,
+      end: Alignment.bottomRight,
+      colors: [ColorPalette.primaryColor, ColorPalette.secondaryColor]);
 }
