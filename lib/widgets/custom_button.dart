@@ -11,6 +11,8 @@ class CustomButton extends StatelessWidget {
   final Gradient? gradient;
   final VoidCallback onPressed;
   final Widget child;
+  final double? opacity;
+  final Color? shadowColor;
 
   const CustomButton({
     Key? key,
@@ -20,11 +22,9 @@ class CustomButton extends StatelessWidget {
     this.backgroundColor,
     this.width = double.infinity,
     this.height,
-    this.gradient = const LinearGradient(
-      colors: [ColorPalette.primaryColor, ColorPalette.secondaryColor],
-      begin: Alignment.topLeft,
-      end: Alignment.bottomRight,
-    ),
+    this.gradient,
+    this.opacity,
+    this.shadowColor,
   }) : super(key: key);
 
   @override
@@ -32,19 +32,35 @@ class CustomButton extends StatelessWidget {
     final borderRadius =
         this.borderRadius ?? BorderRadius.circular(Sizes.radiusLgSize);
     final height = this.height ?? 5.h;
+    final gradient = this.gradient ??
+        (backgroundColor == null
+            ? LinearGradient(
+                colors: [
+                  ColorPalette.primaryColor.withOpacity(opacity ?? 1),
+                  ColorPalette.secondaryColor.withOpacity(opacity ?? 1),
+                ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              )
+            : null);
+    final shadowColor = this.shadowColor ??
+        (backgroundColor ??
+            ColorPalette.secondaryColor.withOpacity(opacity ?? 1));
     return Container(
       width: width,
       height: height,
       decoration: BoxDecoration(
         gradient: gradient,
         borderRadius: borderRadius,
+        color:
+            (gradient == null) ? backgroundColor ?? Colors.transparent : null,
       ),
       child: ElevatedButton(
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
           elevation: 0,
           backgroundColor: backgroundColor ?? Colors.transparent,
-          shadowColor: Colors.transparent,
+          shadowColor: shadowColor,
           shape: RoundedRectangleBorder(borderRadius: borderRadius),
         ),
         child: child,
