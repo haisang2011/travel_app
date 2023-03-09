@@ -4,20 +4,24 @@ import 'package:travel_app/constants/images.dart';
 import 'package:sizer/sizer.dart';
 
 class CustomTopBar extends StatelessWidget {
-  const CustomTopBar({Key? key, required this.child, this.title}) : super(key: key);
+  const CustomTopBar({Key? key, required this.child, this.title, this.height, this.toolbarHeight}) : super(key: key);
 
   final Widget child;
   final Widget? title;
+  final double? height;
+  final double? toolbarHeight;
 
   @override
   Widget build(BuildContext context) {
+    final height = this.height ?? 25.h;
+    final toolbarHeight = this.toolbarHeight ?? 12.5.h;
     return Stack(
       children: [
         SizedBox(
-          height: 25.h,
+          height: height,
           child: AppBar(
             centerTitle: true,
-            toolbarHeight: 12.5.h,
+            toolbarHeight: toolbarHeight,
             backgroundColor: ColorPalette.backgroundScaffoldColor,
             automaticallyImplyLeading: false,
             title: title,
@@ -45,8 +49,8 @@ class CustomTopBar extends StatelessWidget {
           ),
         ),
         Container(
-          margin: EdgeInsets.only(top: 25.h - 35),
-          padding: const EdgeInsets.symmetric(horizontal: 28.0),
+          margin: EdgeInsets.only(top: height - 35),
+          padding: EdgeInsets.symmetric(horizontal: 6.5.w),
           child: child,
         )
       ],

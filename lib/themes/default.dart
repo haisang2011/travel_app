@@ -81,5 +81,10 @@ var theme = ThemeData.light().copyWith(
           fontWeight: FontWeight.bold,
           color: ColorPalette.fontBlackColor,
         ),
+        labelSmall: TextStyle(
+          fontSize: Sizes.fontSmSize,
+          fontWeight: FontWeight.w500,
+          color: ColorPalette.fontBlackColor,
+        ),
       ),
 );
