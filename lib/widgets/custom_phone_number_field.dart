@@ -1,26 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:flutter_multi_formatter/formatters/phone_input_formatter.dart';
 import 'package:sizer/sizer.dart';
 import 'package:travel_app/constants/colors.dart';
 import 'package:travel_app/constants/dismension.dart';
 
-class CustomTextField extends StatelessWidget {
+class CustomPhoneNumberField extends StatelessWidget {
   final String? hintText;
   final Widget? prefixIcon;
-  final Widget? suffixIcon;
   final BorderRadius? borderRadius;
-  final bool obscureText;
-  final TextInputType keyboardType;
 
-  const CustomTextField(
-      {Key? key,
-      this.hintText,
-      this.borderRadius,
-      this.prefixIcon,
-      this.suffixIcon,
-      this.keyboardType = TextInputType.text,
-      this.obscureText = false})
+  const CustomPhoneNumberField(
+      {Key? key, this.hintText, this.borderRadius, this.prefixIcon})
       : super(key: key);
 
   @override
@@ -28,14 +19,20 @@ class CustomTextField extends StatelessWidget {
     final borderRadius =
         this.borderRadius ?? BorderRadius.circular(Sizes.radiusSmSize);
     return TextFormField(
-      obscureText: obscureText,
-      keyboardType: keyboardType,
+      inputFormatters: [
+        PhoneInputFormatter(
+          allowEndlessPhone: false,
+        )
+      ],
+      keyboardType: TextInputType.phone,
+      maxLength: 13,
       style: TextStyle(
           fontSize: Sizes.fontLgSize,
           color: ColorPalette.fontBlackColor,
           fontWeight: FontWeight.w500),
       cursorColor: ColorPalette.primaryColor,
       decoration: InputDecoration(
+        counterText: "",
         labelText: hintText,
         labelStyle: TextStyle(
           fontSize: Sizes.fontLgSize,
@@ -52,8 +49,6 @@ class CustomTextField extends StatelessWidget {
         filled: true,
         fillColor: ColorPalette.whiteColor,
         floatingLabelBehavior: FloatingLabelBehavior.auto,
-        suffixIcon: suffixIcon,
-        suffixIconColor: ColorPalette.raisinBlackColor,
       ),
     );
   }

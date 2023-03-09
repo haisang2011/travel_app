@@ -11,3 +11,5 @@ const String detailHotelRoute = '/detail-hotel';
 const String searchHotelRoute = '/search-hotel';
 const String selectDateRoute = '/search-hotel/select-date';
 const String selectGuestRoomScreen = '/search-hotel/select-guest-room';
+const String signInRoute = '/sign-in';
+const String signUpRoute = '/sign-up';
