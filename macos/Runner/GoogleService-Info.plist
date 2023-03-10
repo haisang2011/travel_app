@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>298140799351-bep6gl79jlo9kh2tgh1p3s4brvj1i96t.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.298140799351-bep6gl79jlo9kh2tgh1p3s4brvj1i96t</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDl4HWNCo9jd5uBiPneUYA0nTtMVtEOht4</string>
+	<key>GCM_SENDER_ID</key>
+	<string>298140799351</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.travelApp</string>
+	<key>PROJECT_ID</key>
+	<string>travo-app-12f4b</string>
+	<key>STORAGE_BUCKET</key>
+	<string>travo-app-12f4b.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:298140799351:ios:0bcc4f1da09be8245c5172</string>
+</dict>
+</plist>
