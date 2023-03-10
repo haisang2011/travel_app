@@ -6,9 +6,11 @@ import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:travel_app/constants/colors.dart';
 import 'package:travel_app/constants/dismension.dart';
 import 'package:travel_app/constants/images.dart';
+import 'package:travel_app/widgets/custom_button.dart';
 import 'package:travel_app/widgets/custom_text_field.dart';
 import 'package:travel_app/widgets/custom_top_bar.dart';
 import 'package:sizer/sizer.dart';
+import 'package:travel_app/routes/routes.dart' as routes;
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -20,20 +22,21 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int _currentIndex = 0;
 
-  Widget _buildItem(
-      {required String title,
-      required Widget icon,
-      required Color color,
-      required EdgeInsets padding}) {
+  Widget _buildItem({
+    required String title,
+    required Widget icon,
+    required Color color,
+    required EdgeInsets padding,
+    VoidCallback? onPressed,
+  }) {
     return Column(
       children: [
-        Container(
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              color: color.withOpacity(0.2)),
-          height: 8.h,
+        CustomButton(
+          height: 9.h,
           width: 26.w,
-          padding: padding,
+          backgroundColor: color.withOpacity(0.2),
+          borderRadius: BorderRadius.circular(Sizes.radiusLgSize),
+          onPressed: onPressed ?? () {},
           child: icon,
         ),
         SizedBox(
@@ -56,14 +59,18 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   Text(
                     'Hi, James!',
-                    style: TextStyle(fontSize: Sizes.fontXlSize, fontWeight: FontWeight.w500),
+                    style: TextStyle(
+                        fontSize: Sizes.fontXlSize,
+                        fontWeight: FontWeight.w500),
                   ),
                   SizedBox(
                     height: 1.5.h,
                   ),
                   Text(
                     'Where are you going next?',
-                    style: TextStyle(fontSize: Sizes.fontXsSize, fontWeight: FontWeight.w400),
+                    style: TextStyle(
+                        fontSize: Sizes.fontXsSize,
+                        fontWeight: FontWeight.w400),
                   )
                 ],
               ),
@@ -89,7 +96,8 @@ class _HomeScreenState extends State<HomeScreen> {
             children: [
               CustomTextField(
                 hintText: 'Search your destination',
-                prefixIcon: Icon(FontAwesomeIcons.magnifyingGlass, size: Sizes.fontLgSize),
+                prefixIcon: Icon(FontAwesomeIcons.magnifyingGlass,
+                    size: Sizes.fontLgSize),
               ),
               SizedBox(height: 2.h),
               Row(
@@ -102,7 +110,13 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       color: ColorPalette.yellowColor,
                       padding: EdgeInsets.symmetric(
-                          vertical: 2.h, horizontal: 2.w)),
+                        vertical: 2.h,
+                        horizontal: 2.w,
+                      ),
+                      onPressed: () {
+                        Navigator.of(context)
+                            .pushNamed(routes.searchHotelRoute);
+                      }),
                   _buildItem(
                       title: 'Flights',
                       icon: SvgPicture.asset(SvgPath.flightIcon),

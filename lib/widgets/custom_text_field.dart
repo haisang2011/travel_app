@@ -25,7 +25,7 @@ class CustomTextField extends StatelessWidget {
             labelText: hintText,
             labelStyle: TextStyle(fontSize: Sizes.fontMdSize),
             prefixIcon: prefixIcon,
-            prefixIconColor: ColorPalette.fontGreyColor,
+            prefixIconColor: ColorPalette.fontGrayColor,
             border: OutlineInputBorder(borderRadius: borderRadius),
             contentPadding: EdgeInsets.symmetric(horizontal: 4.sp, vertical: 8.sp),
             enabledBorder: OutlineInputBorder(

@@ -81,7 +81,7 @@ class HotelCard extends StatelessWidget {
                         '364 m from destination',
                         overflow: TextOverflow.ellipsis,
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              color: ColorPalette.fontGreyColor,
+                              color: ColorPalette.fontGrayColor,
                             ),
                       ),
                     ],
@@ -101,13 +101,13 @@ class HotelCard extends StatelessWidget {
                         '(3241 reviewers)',
                         overflow: TextOverflow.ellipsis,
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                              color: ColorPalette.fontGreyColor,
+                              color: ColorPalette.fontGrayColor,
                             ),
                       ),
                     ],
                   ),
                   DashedDivider(
-                    color: ColorPalette.mercuryGreyColor,
+                    color: ColorPalette.mercuryGrayColor,
                     padding: EdgeInsets.only(bottom: Sizes.paddingXsSize),
                   ),
                   Row(
