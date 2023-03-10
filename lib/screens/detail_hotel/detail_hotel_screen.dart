@@ -85,6 +85,7 @@ class _DetailHotelScreenState extends State<DetailHotelScreen> {
             ),
           ),
           AppHeader(
+            hideBanner: true,
             leadingIcon: Icons.arrow_back,
             onPressedLeading: () {
               Navigator.of(context).pop();
@@ -105,7 +106,7 @@ class _DetailHotelScreenState extends State<DetailHotelScreen> {
                     controller: controller,
                     count: 2,
                     effect: ExpandingDotsEffect(
-                      dotColor: ColorPalette.altoGreyColor,
+                      dotColor: ColorPalette.altoGrayColor,
                       activeDotColor: ColorPalette.whiteColor,
                       dotWidth: 0.8.h,
                       dotHeight: 0.8.h,
@@ -189,7 +190,7 @@ class _DetailHotelScreenState extends State<DetailHotelScreen> {
                                       ],
                                     ),
                                     const DashedDivider(
-                                      color: ColorPalette.mercuryGreyColor,
+                                      color: ColorPalette.mercuryGrayColor,
                                     ),
                                     _buildIconRow(
                                       icon: Icon(
@@ -223,13 +224,13 @@ class _DetailHotelScreenState extends State<DetailHotelScreen> {
                                               .bodyMedium
                                               ?.copyWith(
                                                 color:
-                                                    ColorPalette.fontGreyColor,
+                                                    ColorPalette.fontGrayColor,
                                               ),
                                         ),
                                       ],
                                     ),
                                     const DashedDivider(
-                                      color: ColorPalette.mercuryGreyColor,
+                                      color: ColorPalette.mercuryGrayColor,
                                     ),
                                     SizedBox(height: 2.h),
                                     _buildTitle('Information'),

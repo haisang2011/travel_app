@@ -8,3 +8,6 @@ const String screen3Route = '/screen3';
 
 const String resultHotelRoute = '/result-hotel';
 const String detailHotelRoute = '/detail-hotel';
+const String searchHotelRoute = '/search-hotel';
+const String selectDateRoute = '/search-hotel/select-date';
+const String selectGuestRoomScreen = '/search-hotel/select-guest-room';

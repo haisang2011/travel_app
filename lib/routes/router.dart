@@ -3,6 +3,9 @@ import 'package:travel_app/screens/detail_hotel/detail_hotel_screen.dart';
 import 'package:travel_app/screens/home/home_screen.dart';
 import 'package:travel_app/screens/result_hotel/result_hotel_screen.dart';
 import 'package:travel_app/screens/introdution/intro_screen.dart';
+import 'package:travel_app/screens/search_hotel/search_hotel_screen.dart';
+import 'package:travel_app/screens/search_hotel/select_date_screen.dart';
+import 'package:travel_app/screens/search_hotel/select_guest_room_screen.dart';
 import 'package:travel_app/screens/splash/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'routes.dart' as routes;
@@ -22,19 +25,31 @@ class AppRouter {
           child: const HomeScreen(),
         );
       case routes.resultHotelRoute:
-        return PageRouteTransition(
-          direction: AxisDirection.left,
-          child: const ResultHotelScreen(),
+        return MaterialPageRoute(
+          builder: (_) => const ResultHotelScreen(),
         );
       case routes.detailHotelRoute:
         return PageRouteTransition(
           direction: AxisDirection.left,
-          child: const DetailHotelScreen()
+          child: const DetailHotelScreen(),
         );
       case routes.introduceRoute:
         return PageRouteTransition(
-          direction: AxisDirection.left, 
-          child: const IntroScreen()
+          direction: AxisDirection.left,
+          child: const IntroScreen(),
+        );
+      case routes.searchHotelRoute:
+        return PageRouteTransition(
+          direction: AxisDirection.left,
+          child: const SearchHotelScreen(),
+        );
+      case routes.selectDateRoute:
+        return MaterialPageRoute(
+          builder: (_) => const SelectDateScreen(),
+        );
+      case routes.selectGuestRoomScreen:
+        return MaterialPageRoute(
+          builder: (_) => const SelectGuestRoomScreen(),
         );
       default:
         return null;
