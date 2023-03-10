@@ -13,6 +13,9 @@ class ColorPalette {
   static const fontGrayColor = Color(0xff838383);
   static const mercuryGrayColor = Color(0xffE5E5E5);
   static const doveGrayColor = Color(0xff636363);
+  static const fontLightColor = Color(0xff636363);
+  static const fontGreyColor = Color(0xff838383);
+  static const mercuryGreyColor = Color(0xffE5E5E5);
   static const ebonyClayColor = Color(0xff2D3143);
   static const vanillaIceColor = Color(0xffF5DCDC);
   static const altoGrayColor = Color(0xffD8D8D8);
@@ -25,6 +28,8 @@ class ColorPalette {
   static const backgroundScaffoldColor = Color(0xffF2F2F2);
   static const titleTextColor = Color(0xff313131);
   static const swansDownColor = Color(0xffD9EDEB);
+  static const raisinBlackColor = Color(0xff232323);
+  static const blueColor = Color(0xff3C5A9A);
 }
 
 class Gradients {

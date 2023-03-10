@@ -1,26 +1,44 @@
 import 'package:flutter/material.dart';
 import 'package:travel_app/constants/colors.dart';
+import 'package:travel_app/constants/dismension.dart';
 import 'package:travel_app/constants/images.dart';
 import 'package:sizer/sizer.dart';
 
 class CustomTopBar extends StatelessWidget {
-  const CustomTopBar({Key? key, required this.child, this.title, this.height, this.toolbarHeight}) : super(key: key);
+  const CustomTopBar(
+      {Key? key,
+      required this.child,
+      this.title,
+      this.height,
+      this.toolbarHeight,
+      this.spacingTopBar,
+      this.paddingChild,
+      this.bottomChildOnTopBar,
+      this.centerTitle = true})
+      : super(key: key);
 
   final Widget child;
   final Widget? title;
   final double? height;
   final double? toolbarHeight;
+  final double? spacingTopBar;
+  final EdgeInsets? paddingChild;
+  final bool? centerTitle;
+  final Widget? bottomChildOnTopBar;
 
   @override
   Widget build(BuildContext context) {
     final height = this.height ?? 25.h;
     final toolbarHeight = this.toolbarHeight ?? 12.5.h;
+    final spacingTopBar = this.spacingTopBar ?? 0;
+    final paddingChild =
+        this.paddingChild ?? EdgeInsets.symmetric(horizontal: 6.5.w);
     return Stack(
       children: [
         SizedBox(
           height: height,
           child: AppBar(
-            centerTitle: true,
+            centerTitle: centerTitle,
             toolbarHeight: toolbarHeight,
             backgroundColor: ColorPalette.backgroundScaffoldColor,
             automaticallyImplyLeading: false,
@@ -44,13 +62,18 @@ class CustomTopBar extends StatelessWidget {
                       ImagePath.imagebottomRightOval,
                       fit: BoxFit.cover,
                     )),
+                Positioned(
+                    bottom: Sizes.paddingXsSize,
+                    left: 0,
+                    right: 0,
+                    child: bottomChildOnTopBar ?? const SizedBox()),
               ],
             ),
           ),
         ),
         Container(
-          margin: EdgeInsets.only(top: height - 35),
-          padding: EdgeInsets.symmetric(horizontal: 6.5.w),
+          margin: EdgeInsets.only(top: height - spacingTopBar),
+          padding: paddingChild,
           child: child,
         )
       ],

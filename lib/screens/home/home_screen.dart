@@ -52,6 +52,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       body: SingleChildScrollView(
         child: CustomTopBar(
+          spacingTopBar: 35,
           title: Row(
             children: [
               Column(

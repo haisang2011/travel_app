@@ -6,6 +6,7 @@ class SvgPath {
   static const hotelIcon = 'assets/images/hotel.svg';
   static const flightIcon = 'assets/images/flight.svg';
   static const buildingIcon = 'assets/images/hotel_flight.svg';
+  static const googleIcon = 'assets/images/google.svg';
 }
 
 class ImagePath {
