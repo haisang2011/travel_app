@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:travel_app/bloc/common_bloc/common_bloc.dart';
 import 'package:travel_app/bloc/observer.dart';
+import 'package:travel_app/constants/api.dart';
 import 'package:travel_app/data/di/config.dart';
 import 'package:travel_app/data/source/local_storage/local_storage.dart';
 import 'package:travel_app/data/source/network/http_overrides.dart';
@@ -16,8 +17,6 @@ import 'firebase_options.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-const USE_EMULATOR_FIREBASE = false;
-
 void main() async {
   HttpOverrides.global = AppHttpOverrides();
   Bloc.observer = AppBlocObserver();
@@ -30,7 +29,7 @@ void main() async {
   );
 
   // Run connect to Firebase Emulator
-  if (USE_EMULATOR_FIREBASE) {
+  if (useEmulatorFirebase) {
     await _connectToFirebaseEmulator();
   }
 
@@ -41,15 +40,12 @@ void main() async {
 }
 
 Future _connectToFirebaseEmulator() async {
-  const localHostString = '0.0.0.0';
-
   FirebaseFirestore.instance.settings = const Settings(
-    host: '$localHostString:8080',
+    host: '$apiUrl:$fireStoreApiPort',
     sslEnabled: false,
     persistenceEnabled: false,
   );
-
-  await FirebaseAuth.instance.useAuthEmulator(localHostString, 9099);
+  await FirebaseAuth.instance.useAuthEmulator(apiUrl, authenticationApiPort);
 }
 
 class App extends StatelessWidget {
