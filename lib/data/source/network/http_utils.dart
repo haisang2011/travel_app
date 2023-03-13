@@ -16,18 +16,22 @@ enum RequestMethod {
   const RequestMethod(this.name);
 }
 
-class HttpUtils {
+abstract class HttpUtils {
   late Dio dio;
 
-  HttpUtils() {
+  HttpUtils(String baseUrl) {
+    _initDio(baseUrl);
+  }
+
+  void _initDio(String baseUrl) {
     BaseOptions baseOptions = BaseOptions(
-      baseUrl: apiUrl,
+      baseUrl: baseUrl,
       receiveDataWhenStatusError: true,
       connectTimeout: const Duration(seconds: apiConnectionTimeout),
       receiveTimeout: const Duration(seconds: apiConnectionTimeout),
     );
     dio = Dio(baseOptions);
-    printTest('HttpUtils: initialized dio');
+    printTest('HttpUtils: initialized dio with base url $baseUrl');
   }
 
   String _applyPathVariables(
@@ -41,9 +45,7 @@ class HttpUtils {
   }
 
   String _prepareForRequest(
-      String endPoint, Map<String, dynamic>? pathVariables, String? token) {
-    final finalToken =
-        token ?? getIt<LocalStorage>().getString(key: CacheKey.apiToken);
+      String endPoint, Map<String, dynamic>? pathVariables) {
     final finalEndPoint = pathVariables != null
         ? _applyPathVariables(endPoint, pathVariables)
         : endPoint;
@@ -51,7 +53,6 @@ class HttpUtils {
     // Prepare headers
     dio.options.headers = {
       "Content-Type": "application/json",
-      if (finalToken != null) "authorization": finalToken,
     };
 
     return finalEndPoint;
@@ -84,21 +85,25 @@ class HttpUtils {
     Map<String, dynamic>? pathVariables,
     Map<String, dynamic>? queryParameters,
     String? token,
+    String? key,
     bool formData = true,
   }) async {
     try {
-      final finalEndPoint = _prepareForRequest(endPoint, pathVariables, token);
+      final finalEndPoint = _prepareForRequest(endPoint, pathVariables);
+      final finalQuery = Map<String, dynamic>.from(queryParameters ?? {});
+      if (token != null) finalQuery['auth'] = token;
+      if (key != null) finalQuery['key'] = key;
+
       final Response<dynamic> response;
       switch (method) {
         case RequestMethod.get:
-          response =
-              await dio.get(finalEndPoint, queryParameters: queryParameters);
+          response = await dio.get(finalEndPoint, queryParameters: finalQuery);
           break;
         case RequestMethod.post:
           response = await dio.post(
             finalEndPoint,
             data: formData ? FormData.fromMap(data ?? {}) : data,
-            queryParameters: queryParameters,
+            queryParameters: finalQuery,
           );
           break;
       }
@@ -107,7 +112,7 @@ class HttpUtils {
         method: method,
         response: response,
         data: data,
-        queryParameters: queryParameters,
+        queryParameters: finalQuery,
       );
       return ApiSuccess(response.data, response.statusCode);
     } on SocketException {
@@ -129,6 +134,46 @@ class HttpUtils {
       return ApiFailure('Something was wrong, please try again');
     }
   }
+}
+
+class AuthenticationUtils extends HttpUtils {
+  AuthenticationUtils() : super('$apiUrl:$authenticationApiPort');
+
+  Future<ApiResults> getData({
+    required String endPoint,
+    Map<String, dynamic>? pathVariables,
+    Map<String, dynamic>? queryParameters,
+  }) {
+    return _sendRequest(
+      method: RequestMethod.get,
+      endPoint: endPoint,
+      pathVariables: pathVariables,
+      queryParameters: queryParameters,
+      key: firebaseApiKey,
+    );
+  }
+
+  Future<ApiResults> postData({
+    required String endPoint,
+    Map<String, dynamic>? data,
+    Map<String, dynamic>? pathVariables,
+    Map<String, dynamic>? queryParameters,
+    bool formData = true,
+  }) {
+    return _sendRequest(
+      method: RequestMethod.post,
+      endPoint: endPoint,
+      data: data,
+      pathVariables: pathVariables,
+      queryParameters: queryParameters,
+      formData: formData,
+      key: firebaseApiKey,
+    );
+  }
+}
+
+class FireStoreUtils extends HttpUtils {
+  FireStoreUtils() : super('$apiUrl:$fireStoreApiPort');
 
   Future<ApiResults> getData({
     required String endPoint,

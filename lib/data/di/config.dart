@@ -10,7 +10,8 @@ Future<void> initSingletons() async {
   // Initialize services
   getIt.registerLazySingleton<AppRouter>(() => AppRouter());
   getIt.registerLazySingleton<LocalStorage>(() => LocalStorage());
-  getIt.registerLazySingleton<HttpUtils>(() => HttpUtils());
+  getIt.registerLazySingleton<AuthenticationUtils>(() => AuthenticationUtils());
+  getIt.registerLazySingleton<FireStoreUtils>(() => FireStoreUtils());
 
   // Initialize blocs
   getIt.registerLazySingleton<CommonBloc>(() => CommonBloc());
