@@ -90,8 +90,10 @@ abstract class HttpUtils {
   }) async {
     try {
       final finalEndPoint = _prepareForRequest(endPoint, pathVariables);
+      final finalToken =
+          token ?? getIt<LocalStorage>().getString(key: CacheKey.apiToken);
       final finalQuery = Map<String, dynamic>.from(queryParameters ?? {});
-      if (token != null) finalQuery['auth'] = token;
+      if (finalToken != null) finalQuery['auth'] = finalToken;
       if (key != null) finalQuery['key'] = key;
 
       final Response<dynamic> response;
