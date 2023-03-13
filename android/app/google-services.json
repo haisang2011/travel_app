@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "298140799351",
+    "project_id": "travo-app-12f4b",
+    "storage_bucket": "travo-app-12f4b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:298140799351:android:2ed43c3bc94a8f855c5172",
+        "android_client_info": {
+          "package_name": "com.example.travel_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "298140799351-5uejp71nq8k47f5c4k9kgapnpfcq1mld.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC73TsWVWz6PM3qtjDb6LwDr0M8bR4G2qU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "298140799351-5uejp71nq8k47f5c4k9kgapnpfcq1mld.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
