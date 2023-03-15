@@ -22,12 +22,15 @@ class _SplashScreenState extends State<SplashScreen> {
 
   void _redirectNextScreen() async {
     await Future.delayed(const Duration(milliseconds: 2000));
-    final bool? ignoreIntro = getIt<LocalStorage>().getBoolean(key: CacheKey.ignoreIntro);
+    final bool? ignoreIntro =
+        getIt<LocalStorage>().getBoolean(key: CacheKey.ignoreIntro);
     if (!mounted) return;
     if (ignoreIntro != null && ignoreIntro) {
-      Navigator.of(context).pushNamedAndRemoveUntil(routes.homeRoute, (route) => false);
+      Navigator.of(context)
+          .pushNamedAndRemoveUntil(routes.homeRoute, (route) => false);
     } else {
-      Navigator.of(context).pushNamedAndRemoveUntil(routes.introduceRoute, (route) => false);
+      Navigator.of(context)
+          .pushNamedAndRemoveUntil(routes.introduceRoute, (route) => false);
     }
   }
 
@@ -36,8 +39,16 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
       body: Stack(
         children: [
-          Positioned.fill(child: Image.asset(ImagePath.imageBackgroundSplash, fit: BoxFit.cover,)),
-          Positioned.fill(child: Image.asset(ImagePath.imageCircleSplash, fit: BoxFit.cover,)),
+          Positioned.fill(
+              child: Image.asset(
+            ImagePath.imageBackgroundSplash,
+            fit: BoxFit.cover,
+          )),
+          Positioned.fill(
+              child: Image.asset(
+            ImagePath.imageCircleSplash,
+            fit: BoxFit.cover,
+          )),
         ],
       ),
     );

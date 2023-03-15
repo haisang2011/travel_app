@@ -1,51 +1,36 @@
 import 'dart:io';
-
 import 'package:flutter/services.dart';
 import 'package:travel_app/bloc/common_bloc/common_bloc.dart';
 import 'package:travel_app/bloc/observer.dart';
-import 'package:travel_app/constants/api.dart';
 import 'package:travel_app/data/di/config.dart';
+import 'package:travel_app/data/repository/hotel_repository.dart';
+import 'package:travel_app/data/source/firebase/config.dart';
 import 'package:travel_app/data/source/local_storage/local_storage.dart';
-import 'package:travel_app/data/source/network/http_overrides.dart';
+import 'package:travel_app/data/source/firebase/http_overrides.dart';
 import 'package:travel_app/routes/router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sizer/sizer.dart';
 import 'package:travel_app/themes/default.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'firebase_options.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:travel_app/utils/common_utils.dart';
 
 void main() async {
   HttpOverrides.global = AppHttpOverrides();
   Bloc.observer = AppBlocObserver();
   WidgetsFlutterBinding.ensureInitialized();
-  initSingletons();
 
-  // Initial Firebase
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  // Init firebase
+  await initFirebase();
 
-  // Run connect to Firebase Emulator
-  if (useEmulatorFirebase) {
-    await _connectToFirebaseEmulator();
-  }
+  // Init singleton services
+  await initSingletons(); // firebase must be initialized before services
 
+  // Init local storage
   await getIt<LocalStorage>().initSharedPreferences();
+
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]).then(
     (_) => runApp(const App()),
   );
-}
-
-Future _connectToFirebaseEmulator() async {
-  FirebaseFirestore.instance.settings = const Settings(
-    host: '$apiUrl:$fireStoreApiPort',
-    sslEnabled: false,
-    persistenceEnabled: false,
-  );
-  await FirebaseAuth.instance.useAuthEmulator(apiUrl, authenticationApiPort);
 }
 
 class App extends StatelessWidget {
