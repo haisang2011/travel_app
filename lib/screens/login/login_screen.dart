@@ -10,7 +10,7 @@ import 'package:sizer/sizer.dart';
 import 'package:travel_app/constants/colors.dart';
 import 'package:travel_app/constants/dismension.dart';
 import 'package:travel_app/constants/images.dart';
-import 'package:travel_app/screens/login/login_bloc.dart';
+import 'package:travel_app/screens/login/bloc/login_bloc.dart';
 import 'package:travel_app/widgets/app_button.dart';
 import 'package:travel_app/widgets/custom_back_button.dart';
 import 'package:travel_app/widgets/custom_button.dart';

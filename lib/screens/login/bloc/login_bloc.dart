@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:travel_app/bloc/common_bloc/authentication/authentication_repository.dart';
+import 'package:travel_app/data/repository/authentication_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 part 'login_enum.dart';
@@ -10,12 +10,10 @@ part 'login_state.dart';
 part 'login_event.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
-  final AuthenticationRepository _authRepository;
+  final AuthenticationRepository authenticationRepository;
 
-  LoginBloc({
-    required AuthenticationRepository authRepository,
-  })  : _authRepository = authRepository,
-        super(LoginState.initial()) {
+  LoginBloc({required this.authenticationRepository})
+      : super(LoginState.initial()) {
     on<LoginEmailChanged>(_onLoginEmailChanged);
     on<LoginPasswordChanged>(_onLoginPasswordChanged);
     on<LoginSubmitted>(_onLoginSubmitted);
@@ -64,7 +62,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       await Future.delayed(
         const Duration(seconds: 2),
         () {
-          _authRepository.logInWithEmailAndPassword(
+          authenticationRepository.logInWithEmailAndPassword(
             email: state.email,
             password: state.password,
           );

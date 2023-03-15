@@ -26,4 +26,5 @@ Future _connectToFirebaseEmulator() async {
     persistenceEnabled: true,
   );
   await FirebaseAuth.instance.useAuthEmulator(apiUrl, authenticationApiPort);
+  printTest('Firebase: using Firebase Emulator');
 }

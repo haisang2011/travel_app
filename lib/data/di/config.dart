@@ -1,9 +1,10 @@
-import 'package:travel_app/bloc/common_bloc/authentication/authentication_bloc.dart';
+import 'package:travel_app/data/repository/authentication_repository.dart';
 import 'package:travel_app/bloc/common_bloc/common_bloc.dart';
 import 'package:travel_app/data/source/local_storage/local_storage.dart';
 import 'package:travel_app/data/repository/hotel_repository.dart';
 import 'package:travel_app/routes/router.dart';
 import 'package:get_it/get_it.dart';
+import 'package:travel_app/screens/login/bloc/login_bloc.dart';
 import 'package:travel_app/screens/result_hotel/bloc/result_hotel_bloc.dart';
 import 'package:travel_app/utils/common_utils.dart';
 
@@ -14,12 +15,23 @@ Future<void> initSingletons() async {
   getIt.registerLazySingleton<AppRouter>(() => AppRouter());
   getIt.registerLazySingleton<LocalStorage>(() => LocalStorage());
 
-  // Initialize blocs
-  getIt.registerLazySingleton<CommonBloc>(() => CommonBloc());
-  getIt.registerLazySingleton<ResultHotelBloc>(() => ResultHotelBloc());
-
   // Initialize repository
   getIt.registerLazySingleton<HotelRepository>(() => HotelRepository());
+  getIt.registerLazySingleton<AuthenticationRepository>(
+      () => AuthenticationRepository());
+
+  // Initialize blocs
+  getIt.registerLazySingleton<CommonBloc>(
+    () => CommonBloc(
+      authenticationRepository: getIt<AuthenticationRepository>(),
+    ),
+  );
+  getIt.registerLazySingleton<ResultHotelBloc>(() => ResultHotelBloc());
+  getIt.registerLazySingleton<LoginBloc>(
+    () => LoginBloc(
+      authenticationRepository: getIt<AuthenticationRepository>(),
+    ),
+  );
 
   printTest('GetIt: initialized services');
 }
