@@ -12,28 +12,35 @@ class CustomTextField extends StatelessWidget {
   final BorderRadius? borderRadius;
   final bool obscureText;
   final TextInputType keyboardType;
+  final TextEditingController? controller;
+  final ValueChanged<String>? onChanged;
 
-  const CustomTextField(
-      {Key? key,
-      this.hintText,
-      this.borderRadius,
-      this.prefixIcon,
-      this.suffixIcon,
-      this.keyboardType = TextInputType.text,
-      this.obscureText = false})
-      : super(key: key);
+  const CustomTextField({
+    Key? key,
+    this.hintText,
+    this.borderRadius,
+    this.prefixIcon,
+    this.suffixIcon,
+    this.controller,
+    this.onChanged,
+    this.keyboardType = TextInputType.text,
+    this.obscureText = false,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final borderRadius =
         this.borderRadius ?? BorderRadius.circular(Sizes.radiusSmSize);
     return TextFormField(
+      controller: controller,
       obscureText: obscureText,
       keyboardType: keyboardType,
+      onChanged: onChanged,
       style: TextStyle(
-          fontSize: Sizes.fontLgSize,
-          color: ColorPalette.fontBlackColor,
-          fontWeight: FontWeight.w500),
+        fontSize: Sizes.fontLgSize,
+        color: ColorPalette.fontBlackColor,
+        fontWeight: FontWeight.w500,
+      ),
       cursorColor: ColorPalette.primaryColor,
       decoration: InputDecoration(
         labelText: hintText,
@@ -43,12 +50,21 @@ class CustomTextField extends StatelessWidget {
         prefixIcon: prefixIcon,
         prefixIconColor: ColorPalette.fontGreyColor,
         border: UnderlineInputBorder(
-            borderRadius: borderRadius,
-            borderSide: const BorderSide(width: 0, style: BorderStyle.none)),
-        contentPadding: EdgeInsets.symmetric(horizontal: 8.sp, vertical: 8.sp),
+          borderRadius: borderRadius,
+          borderSide: const BorderSide(
+            width: 0,
+            style: BorderStyle.none,
+          ),
+        ),
+        contentPadding: EdgeInsets.symmetric(
+          horizontal: 8.sp,
+          vertical: 8.sp,
+        ),
         floatingLabelAlignment: FloatingLabelAlignment.start,
         floatingLabelStyle: TextStyle(
-            color: ColorPalette.fontLightColor, fontSize: Sizes.fontMdSize),
+          color: ColorPalette.fontLightColor,
+          fontSize: Sizes.fontMdSize,
+        ),
         filled: true,
         fillColor: ColorPalette.whiteColor,
         floatingLabelBehavior: FloatingLabelBehavior.auto,
