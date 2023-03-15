@@ -16,7 +16,7 @@ class AppRouter {
   late Widget rootScreen;
 
   Route? onGenerateRoute(RouteSettings settings) {
-    rootScreen = const SplashScreen();
+    rootScreen = const LoginScreen();
 
     switch (settings.name) {
       case routes.rootRoute:

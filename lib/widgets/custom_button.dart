@@ -9,14 +9,14 @@ class CustomButton extends StatelessWidget {
   final double? height;
   final Color? backgroundColor;
   final Gradient? gradient;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
   final Widget child;
   final double? opacity;
   final Color? shadowColor;
 
   const CustomButton({
     Key? key,
-    required this.onPressed,
+    this.onPressed,
     required this.child,
     this.borderRadius,
     this.backgroundColor,

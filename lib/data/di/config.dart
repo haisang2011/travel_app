@@ -1,3 +1,4 @@
+import 'package:travel_app/bloc/common_bloc/authentication/authentication_bloc.dart';
 import 'package:travel_app/bloc/common_bloc/common_bloc.dart';
 import 'package:travel_app/data/source/local_storage/local_storage.dart';
 import 'package:travel_app/data/repository/hotel_repository.dart';
