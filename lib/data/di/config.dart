@@ -6,6 +6,7 @@ import 'package:travel_app/routes/router.dart';
 import 'package:get_it/get_it.dart';
 import 'package:travel_app/screens/login/bloc/login_bloc.dart';
 import 'package:travel_app/screens/result_hotel/bloc/result_hotel_bloc.dart';
+import 'package:travel_app/screens/signup/bloc/sign_up_bloc.dart';
 import 'package:travel_app/utils/common_utils.dart';
 
 final getIt = GetIt.instance;
@@ -29,6 +30,11 @@ Future<void> initSingletons() async {
   getIt.registerLazySingleton<ResultHotelBloc>(() => ResultHotelBloc());
   getIt.registerLazySingleton<LoginBloc>(
     () => LoginBloc(
+      authenticationRepository: getIt<AuthenticationRepository>(),
+    ),
+  );
+  getIt.registerLazySingleton<SignUpBloc>(
+    () => SignUpBloc(
       authenticationRepository: getIt<AuthenticationRepository>(),
     ),
   );
