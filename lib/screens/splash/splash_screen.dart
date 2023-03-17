@@ -19,6 +19,12 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  @override
+  void initState() {
+    super.initState();
+    checkAuthenticated(getIt<CommonBloc>().state);
+  }
+
   void checkAuthenticated(CommonState state) async {
     AuthenticationStatusEnum status = state.status;
     await Future.delayed(const Duration(milliseconds: 2000));
