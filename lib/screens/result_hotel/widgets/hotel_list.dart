@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:travel_app/constants/colors.dart';
 import 'package:travel_app/constants/dismension.dart';
 import 'package:travel_app/data/di/config.dart';
+import 'package:travel_app/screens/detail_hotel/bloc/detail_hotel_bloc.dart';
 import 'package:travel_app/screens/result_hotel/bloc/result_hotel_bloc.dart';
 import 'package:travel_app/screens/result_hotel/widgets/hotel_card.dart';
 import 'package:travel_app/utils/common_utils.dart';
@@ -43,16 +45,6 @@ class _HotelListState extends State<HotelList> {
         child: CircularProgressIndicator(),
       );
     }
-    if (state.status == FetchStatus.failure) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            'Error when fetching hotels!',
-            style: Theme.of(context).textTheme.bodyMedium,
-          ),
-        ),
-      );
-    }
     if (state.hotels.isEmpty) {
       return Center(
         child: Text(
@@ -89,7 +81,23 @@ class _HotelListState extends State<HotelList> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ResultHotelBloc, ResultHotelState>(
+    return BlocConsumer<ResultHotelBloc, ResultHotelState>(
+      listener: (context, state) {
+        if (state.status == FetchStatus.failure) {
+          ScaffoldMessenger.of(context)
+            ..hideCurrentSnackBar()
+            ..showSnackBar(
+              SnackBar(
+                content: Text(
+                  'Error when fetching hotels!',
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: ColorPalette.whiteColor,
+                      ),
+                ),
+              ),
+            );
+        }
+      },
       builder: _buildListView,
     );
   }
