@@ -1,3 +1,4 @@
+import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:travel_app/routes/page_route_transition.dart';
 import 'package:travel_app/screens/detail_hotel/detail_hotel_screen.dart';
 import 'package:travel_app/screens/home/home_screen.dart';
@@ -16,7 +17,7 @@ class AppRouter {
   late Widget rootScreen;
 
   Route? onGenerateRoute(RouteSettings settings) {
-    rootScreen = const LoginScreen();
+    rootScreen = const SplashScreen();
 
     switch (settings.name) {
       case routes.rootRoute:
@@ -33,7 +34,7 @@ class AppRouter {
       case routes.detailHotelRoute:
         return PageRouteTransition(
           direction: AxisDirection.left,
-          child: const DetailHotelScreen(),
+          child: DetailHotelScreen(id: settings.arguments as String),
         );
       case routes.searchHotelRoute:
         return PageRouteTransition(
@@ -41,12 +42,15 @@ class AppRouter {
           child: const SearchHotelScreen(),
         );
       case routes.selectDateRoute:
+        final defaultDateRange = settings.arguments as PickerDateRange?;
         return MaterialPageRoute(
-          builder: (_) => const SelectDateScreen(),
+          builder: (_) => SelectDateScreen(defaultDateRange: defaultDateRange),
         );
       case routes.selectGuestRoomScreen:
+        final defaultValues = settings.arguments as Map<String, int?>;
         return MaterialPageRoute(
-          builder: (_) => const SelectGuestRoomScreen(),
+          builder: (_) => SelectGuestRoomScreen(
+              nbGuests: defaultValues['guest'], nbRooms: defaultValues['room']),
         );
       case routes.introduceRoute:
         return PageRouteTransition(

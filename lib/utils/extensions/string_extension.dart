@@ -1,4 +1,4 @@
-extension StringExtensions on String {
+extension StringExtension on String {
   String? firstWord() {
     final firstSpaceIndex = indexOf(' ');
     if (firstSpaceIndex > -1) {

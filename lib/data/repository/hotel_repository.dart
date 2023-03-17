@@ -2,25 +2,39 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:travel_app/data/models/hotel.dart';
 
 class HotelRepository {
-  final CollectionReference<Map<String, dynamic>> collection =
-      FirebaseFirestore.instance.collection(Hotel.collectionName);
+  late CollectionReference<Hotel> collection;
 
-  Future<List<Hotel>> getData({
+  HotelRepository() {
+    collection = FirebaseFirestore.instance
+        .collection(Hotel.collectionName)
+        .withConverter(
+          fromFirestore: (snapshot, _) => Hotel.fromJson({
+            'id': snapshot.id,
+            ...snapshot.data()!,
+          }),
+          toFirestore: (hotel, _) => hotel.toJson(),
+        );
+  }
+
+  Future<List<Hotel>> findAll({
     int? limit,
-    DocumentSnapshot? lastDocument,
+    String? startAfterId,
   }) async {
-    Query<Map<String, dynamic>> query =
-        collection.orderBy(HotelColumn.name.columnName);
+    Query<Hotel> query = collection.orderBy(FieldPath.documentId);
     if (limit != null) {
       query = query.limit(limit);
     }
-    if (lastDocument != null) {
-      query = query.startAfterDocument(lastDocument);
+    if (startAfterId != null) {
+      query = query.startAt([startAfterId]);
     }
+    await Future.delayed(const Duration(seconds: 2));
     return query.get().then(
-        (QuerySnapshot<Map<String, dynamic>> collectionSnapshot) =>
-            Future<List<Hotel>>.value(collectionSnapshot.docs
-                .map((doc) => Hotel.fromJson(doc.data()))
-                .toList()));
+        (queryResult) => queryResult.docs.map((doc) => doc.data()).toList());
+  }
+
+  Future<Hotel?> findById({required String id}) async {
+    return collection.doc(id).get().then(
+          (snapshot) => snapshot.data(),
+        );
   }
 }

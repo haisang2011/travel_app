@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:travel_app/bloc/common_bloc/common_bloc.dart';
 import 'package:travel_app/bloc/observer.dart';
 import 'package:travel_app/data/di/config.dart';
+import 'package:travel_app/data/repository/hotel_repository.dart';
 import 'package:travel_app/data/source/firebase/config.dart';
 import 'package:travel_app/data/source/firebase/utils.dart';
 import 'package:travel_app/data/source/local_storage/local_storage.dart';
@@ -11,8 +12,11 @@ import 'package:travel_app/routes/router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sizer/sizer.dart';
+import 'package:travel_app/screens/detail_hotel/bloc/detail_hotel_bloc.dart';
 import 'package:travel_app/screens/login/bloc/login_bloc.dart';
 import 'package:travel_app/screens/signup/bloc/sign_up_bloc.dart';
+import 'package:travel_app/screens/result_hotel/bloc/result_hotel_bloc.dart';
+import 'package:travel_app/screens/search_hotel/bloc/search_hotel_bloc.dart';
 import 'package:travel_app/themes/default.dart';
 
 void main() async {
@@ -47,6 +51,9 @@ class App extends StatelessWidget {
         BlocProvider(create: (_) => getIt<CommonBloc>()),
         BlocProvider(create: (_) => getIt<LoginBloc>()),
         BlocProvider(create: (_) => getIt<SignUpBloc>()),
+        BlocProvider(create: (_) => getIt<ResultHotelBloc>()),
+        BlocProvider(create: (_) => getIt<DetailHotelBloc>()),
+        BlocProvider(create: (_) => getIt<SearchHotelBloc>())
       ],
       child: BlocBuilder<CommonBloc, CommonState>(
         builder: (context, state) {

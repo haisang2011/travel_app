@@ -3,15 +3,42 @@ import 'package:sizer/sizer.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:travel_app/constants/colors.dart';
 import 'package:travel_app/constants/dismension.dart';
+import 'package:travel_app/data/di/config.dart';
+import 'package:travel_app/screens/search_hotel/bloc/search_hotel_bloc.dart';
 import 'package:travel_app/widgets/app_header.dart';
 import 'package:travel_app/widgets/custom_button.dart';
-import 'package:travel_app/routes/routes.dart' as routes;
+import 'package:travel_app/utils/extensions/pickerdaterange_extension.dart';
 
-class SelectDateScreen extends StatelessWidget {
-  const SelectDateScreen({super.key});
+class SelectDateScreen extends StatefulWidget {
+  final PickerDateRange? defaultDateRange;
+  const SelectDateScreen({this.defaultDateRange, super.key});
 
-  void _onSelectionChanged(args) {
-    print(args);
+  @override
+  State<SelectDateScreen> createState() => _SelectDateScreenState();
+}
+
+class _SelectDateScreenState extends State<SelectDateScreen> {
+  PickerDateRange? selectedDateRange;
+
+  @override
+  void initState() {
+    selectedDateRange = widget.defaultDateRange?.clone();
+    super.initState();
+  }
+
+  void _onSelectionChanged(DateRangePickerSelectionChangedArgs args) {
+    if (args.value is PickerDateRange) {
+      setState(() {
+        selectedDateRange = args.value;
+      });
+    }
+  }
+
+  bool get isDirty {
+    return selectedDateRange != null &&
+        selectedDateRange!.startDate != null &&
+        selectedDateRange!.endDate != null &&
+        !selectedDateRange!.equals(widget.defaultDateRange);
   }
 
   @override
@@ -50,18 +77,17 @@ class SelectDateScreen extends StatelessWidget {
                           ),
                   selectionShape: DateRangePickerSelectionShape.circle,
                   showNavigationArrow: true,
-                  initialSelectedRange: PickerDateRange(
-                    DateTime.now().subtract(const Duration(days: 4)),
-                    DateTime.now().add(
-                      const Duration(days: 3),
-                    ),
-                  ),
+                  initialSelectedRange: widget.defaultDateRange,
                 ),
                 CustomButton(
                   height: 6.5.h,
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
+                  onPressed: isDirty
+                      ? () {
+                          getIt<SearchHotelBloc>().add(
+                              DateRangeChanged(dateRange: selectedDateRange!));
+                          Navigator.of(context).pop();
+                        }
+                      : null,
                   child: Text(
                     'Select',
                     style: Theme.of(context).textTheme.labelLarge?.copyWith(

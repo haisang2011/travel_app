@@ -6,3 +6,5 @@ abstract class ResultHotelEvent extends Equatable {
   @override
   List<Object> get props => [];
 }
+
+class ResultHotelFetched extends ResultHotelEvent {}
