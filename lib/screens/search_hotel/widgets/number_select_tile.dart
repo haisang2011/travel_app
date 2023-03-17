@@ -6,14 +6,17 @@ class NumberSelectTile extends StatelessWidget {
   final IconData icon;
   final Color iconColor;
   final void Function(int)? onValueChanged;
+  final int? defaultValue;
   final String title;
 
-  const NumberSelectTile(
-      {required this.icon,
-      required this.iconColor,
-      required this.title,
-      this.onValueChanged,
-      super.key});
+  const NumberSelectTile({
+    required this.icon,
+    required this.iconColor,
+    required this.title,
+    this.onValueChanged,
+    this.defaultValue,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +26,7 @@ class NumberSelectTile extends StatelessWidget {
       trailing: NumberSelector(
         onValueChanged: onValueChanged,
         min: 1,
+        initialValue: defaultValue,
       ),
       child: Text(
         title,
