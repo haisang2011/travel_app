@@ -4,7 +4,7 @@ abstract class CommonEvent {}
 
 class _AuthenticationStatusChanged extends CommonEvent {
   _AuthenticationStatusChanged(this.user);
-  final User user;
+  final UserModel user;
 }
 
 class AuthenticationLogoutRequested extends CommonEvent {}

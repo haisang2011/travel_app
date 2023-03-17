@@ -5,12 +5,14 @@ import 'package:travel_app/constants/colors.dart';
 import 'package:travel_app/constants/dismension.dart';
 
 class CustomBackButton extends StatelessWidget {
-  const CustomBackButton({super.key});
+  const CustomBackButton({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        Navigator.of(context).pop();
+      },
       child: Container(
         padding: EdgeInsets.all(8.sp),
         decoration: BoxDecoration(

@@ -3,29 +3,24 @@ part of 'common_bloc.dart';
 enum AuthenticationStatusEnum { unknown, authenticated, unauthenticated }
 
 abstract class CommonState extends Equatable {
-  const CommonState();
+  final AuthenticationStatusEnum status;
+  final UserModel user;
+
+  const CommonState._({
+    this.status = AuthenticationStatusEnum.unauthenticated,
+    this.user = UserModel.empty,
+  });
 
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [status, user];
 }
 
 class AuthenticationState extends CommonState {
-  final AuthenticationStatusEnum status;
-  final User user;
+  const AuthenticationState.unknown() : super._();
 
-  const AuthenticationState._({
-    this.status = AuthenticationStatusEnum.unknown,
-    this.user = User.empty,
-  });
-
-  const AuthenticationState.unknown() : this._();
-
-  const AuthenticationState.authenticated(User user)
-      : this._(status: AuthenticationStatusEnum.authenticated, user: user);
+  const AuthenticationState.authenticated(UserModel user)
+      : super._(user: user, status: AuthenticationStatusEnum.authenticated);
 
   const AuthenticationState.unauthenticated()
-      : this._(status: AuthenticationStatusEnum.unauthenticated);
-
-  @override
-  List<Object> get props => [status, user];
+      : super._(status: AuthenticationStatusEnum.unauthenticated);
 }

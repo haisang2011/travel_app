@@ -5,6 +5,8 @@ import 'package:sizer/sizer.dart';
 import 'package:travel_app/constants/colors.dart';
 import 'package:travel_app/constants/dismension.dart';
 import 'package:travel_app/constants/images.dart';
+import 'package:travel_app/data/di/config.dart';
+import 'package:travel_app/screens/signup/bloc/sign_up_bloc.dart';
 import 'package:travel_app/widgets/app_button.dart';
 import 'package:travel_app/widgets/custom_back_button.dart';
 import 'package:travel_app/widgets/custom_button.dart';
@@ -24,12 +26,6 @@ class SignUpScreen extends StatefulWidget {
 class _SignUpScreenState extends State<SignUpScreen> {
   bool rememberMe = true;
 
-  _onCheckedRememberMe() {
-    setState(() {
-      rememberMe = !rememberMe;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     final ThemeData themeData = Theme.of(context);
@@ -46,7 +42,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   style: textTheme.titleMedium
                       ?.copyWith(color: ColorPalette.whiteColor),
                 ),
-                SizedBoxH2(),
+                const SizedBoxH2(),
                 Text(
                   'Let\’s create your account!',
                   style: textTheme.labelSmall!
@@ -56,93 +52,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
             ),
             child: Column(children: [
               const SizedBoxH3(),
-              const CustomTextField(
-                hintText: 'Name',
-              ),
+              const _NameField(),
               const SizedBoxH2(),
-              const CustomTextField(
-                hintText: 'Country',
-              ),
+              const _PhoneNumberField(),
               const SizedBoxH2(),
-              CustomPhoneNumberField(
-                hintText: 'Phone Number',
-              ),
+              const _EmailField(),
               const SizedBoxH2(),
-              const CustomTextField(
-                hintText: 'Email',
-              ),
-              const SizedBoxH2(),
-              const CustomTextField(
-                hintText: 'Password',
-                obscureText: true,
-                suffixIcon: Icon(
-                  FontAwesomeIcons.solidEyeSlash,
-                  color: ColorPalette.fontGreyColor,
-                ),
-              ),
+              const _PasswordField(),
               const SizedBoxH3(),
-              Wrap(alignment: WrapAlignment.center, spacing: 4, children: [
-                Text('By tapping sign up you agree to the',
-                    style: textTheme.bodyMedium?.copyWith(fontSize: 11.sp)),
-                GestureDetector(
-                    onTap: () {},
-                    child: Container(
-                      child: Text('Terms and',
-                          style: textTheme.bodyMedium?.copyWith(
-                              color: ColorPalette.thirdColor, fontSize: 11.sp)),
-                    )),
-                GestureDetector(
-                    onTap: () {},
-                    child: Container(
-                      child: Text('Condition',
-                          style: textTheme.bodyMedium?.copyWith(
-                              color: ColorPalette.thirdColor,
-                              fontSize: 11.sp,
-                              height: 1.75)),
-                    )),
-                Text('and',
-                    style: textTheme.bodyMedium
-                        ?.copyWith(fontSize: 11.sp, height: 1.75)),
-                GestureDetector(
-                    onTap: () {},
-                    child: Container(
-                      child: Text('Privacy Policy',
-                          style: textTheme.bodyMedium?.copyWith(
-                              color: ColorPalette.thirdColor,
-                              fontSize: 11.sp,
-                              height: 1.75)),
-                    )),
-                Text('of this app',
-                    style: textTheme.bodyMedium
-                        ?.copyWith(fontSize: 11.sp, height: 1.75))
-              ]),
+              const _PrivacyPolicy(),
               const SizedBoxH3(),
-              CustomButton(
-                onPressed: () {},
-                child: Text('Sign Up'),
-                height: 8.5.h,
-              ),
+              const _SignUpButton(),
               const SizedBoxH3(),
-              Row(
-                children: [
-                  Expanded(
-                      flex: 1,
-                      child: Container(
-                          height: 1, color: ColorPalette.fontBlackColor)),
-                  Container(
-                      margin:
-                          EdgeInsets.symmetric(horizontal: Sizes.paddingSmSize),
-                      child: Text(
-                        'or sign up with',
-                        style: textTheme.bodyMedium,
-                      )),
-                  Expanded(
-                      flex: 1,
-                      child: Container(
-                          height: 1, color: ColorPalette.fontBlackColor)),
-                ],
-              ),
-              SizedBoxH3(),
+              const _Divider(),
+              const SizedBoxH3(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -182,9 +105,201 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ))
                 ],
               ),
-              SizedBoxH4(),
+              const SizedBoxH4(),
             ])),
       ),
+    );
+  }
+}
+
+class _Divider extends StatelessWidget {
+  const _Divider({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData themeData = Theme.of(context);
+    final TextTheme textTheme = themeData.textTheme;
+    return Row(
+      children: [
+        Expanded(
+          flex: 1,
+          child: Container(
+            height: 1,
+            color: ColorPalette.fontBlackColor,
+          ),
+        ),
+        Container(
+          margin: EdgeInsets.symmetric(
+            horizontal: Sizes.paddingSmSize,
+          ),
+          child: Text(
+            'or sign up with',
+            style: textTheme.bodyMedium,
+          ),
+        ),
+        Expanded(
+          flex: 1,
+          child: Container(
+            height: 1,
+            color: ColorPalette.fontBlackColor,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _SignUpButton extends StatelessWidget {
+  const _SignUpButton({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomButton(
+      onPressed: () {},
+      height: 8.5.h,
+      child: const Text('Sign Up'),
+    );
+  }
+}
+
+class _PrivacyPolicy extends StatelessWidget {
+  const _PrivacyPolicy({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData themeData = Theme.of(context);
+    final TextTheme textTheme = themeData.textTheme;
+    return Wrap(
+      alignment: WrapAlignment.center,
+      spacing: 4,
+      children: [
+        Text(
+          'By tapping sign up you agree to the',
+          style: textTheme.bodyMedium?.copyWith(
+            fontSize: 11.sp,
+          ),
+        ),
+        GestureDetector(
+          onTap: () {},
+          child: Container(
+            child: Text(
+              'Terms and',
+              style: textTheme.bodyMedium?.copyWith(
+                color: ColorPalette.thirdColor,
+                fontSize: 11.sp,
+              ),
+            ),
+          ),
+        ),
+        GestureDetector(
+          onTap: () {},
+          child: Container(
+            child: Text(
+              'Condition',
+              style: textTheme.bodyMedium?.copyWith(
+                color: ColorPalette.thirdColor,
+                fontSize: 11.sp,
+                height: 1.75,
+              ),
+            ),
+          ),
+        ),
+        Text(
+          'and',
+          style: textTheme.bodyMedium?.copyWith(
+            fontSize: 11.sp,
+            height: 1.75,
+          ),
+        ),
+        GestureDetector(
+          onTap: () {},
+          child: Container(
+            child: Text(
+              'Privacy Policy',
+              style: textTheme.bodyMedium?.copyWith(
+                color: ColorPalette.thirdColor,
+                fontSize: 11.sp,
+                height: 1.75,
+              ),
+            ),
+          ),
+        ),
+        Text(
+          'of this app',
+          style: textTheme.bodyMedium?.copyWith(
+            fontSize: 11.sp,
+            height: 1.75,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _PasswordField extends StatelessWidget {
+  const _PasswordField({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomTextField(
+      hintText: 'Password',
+      onChanged: (value) {
+        getIt<SignUpBloc>().add(SignUpPasswordChanged(password: value));
+      },
+      obscureText: true,
+      suffixIcon: const Icon(
+        FontAwesomeIcons.solidEyeSlash,
+        color: ColorPalette.fontGreyColor,
+      ),
+    );
+  }
+}
+
+class _EmailField extends StatelessWidget {
+  const _EmailField({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomTextField(
+      hintText: 'Email',
+      onChanged: (value) {
+        getIt<SignUpBloc>().add(SignUpEmailChanged(email: value));
+      },
+    );
+  }
+}
+
+class _PhoneNumberField extends StatelessWidget {
+  const _PhoneNumberField({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return const CustomPhoneNumberField(
+      hintText: 'Phone Number',
+    );
+  }
+}
+
+class _NameField extends StatelessWidget {
+  const _NameField({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomTextField(
+      hintText: 'Name',
+      onChanged: (value) {
+        getIt<SignUpBloc>().add(SignUpNameChanged(name: value));
+      },
     );
   }
 }

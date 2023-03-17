@@ -7,9 +7,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sizer/sizer.dart';
+import 'package:travel_app/bloc/common_bloc/common_bloc.dart';
 import 'package:travel_app/constants/colors.dart';
 import 'package:travel_app/constants/dismension.dart';
 import 'package:travel_app/constants/images.dart';
+import 'package:travel_app/data/di/config.dart';
+import 'package:travel_app/data/source/local_storage/cache_keys.dart';
+import 'package:travel_app/data/source/local_storage/local_storage.dart';
 import 'package:travel_app/screens/login/bloc/login_bloc.dart';
 import 'package:travel_app/widgets/app_button.dart';
 import 'package:travel_app/widgets/custom_back_button.dart';
@@ -18,6 +22,8 @@ import 'package:travel_app/widgets/custom_checkbox.dart';
 import 'package:travel_app/widgets/custom_sized_box.dart';
 import 'package:travel_app/widgets/custom_text_field.dart';
 import 'package:travel_app/widgets/custom_top_bar.dart';
+import 'package:travel_app/routes/routes.dart' as routes;
+import 'package:travel_app/utils/common_utils.dart' as commonUtils;
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -30,10 +36,6 @@ class _LoginScreenState extends State<LoginScreen> {
   bool rememberMe = false;
   bool showPassword = false;
 
-  final TextEditingController _emailEditingController = TextEditingController();
-  final TextEditingController _passwordEditingController =
-      TextEditingController();
-
   _onCheckedRememberMe() {
     setState(() {
       rememberMe = !rememberMe;
@@ -44,10 +46,6 @@ class _LoginScreenState extends State<LoginScreen> {
     setState(() {
       showPassword = !showPassword;
     });
-  }
-
-  _signInWithEmailAndPassword() {
-    context.read<LoginBloc>().add(const LoginSubmitted());
   }
 
   Widget _buildBottomChildOnTopBar(TextTheme textTheme) {
@@ -109,7 +107,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Widget _buildFacebookButton() {
     return CustomButton(
-        onPressed: () {},
+        onPressed: () {
+          getIt<CommonBloc>().add(AuthenticationLogoutRequested());
+        },
         backgroundColor: ColorPalette.blueColor,
         height: 8.5.h,
         width: 40.w,
@@ -131,7 +131,9 @@ class _LoginScreenState extends State<LoginScreen> {
       children: [
         const Text('Don\’t have an account?'),
         TextButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).pushNamed(routes.signUpRoute);
+            },
             child: Text(
               'Sign Up',
               style: textTheme.bodyMedium
@@ -141,13 +143,96 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Widget _buildLoginButton({required VoidCallback onPressed}) {
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData themeData = Theme.of(context);
+    final TextTheme textTheme = themeData.textTheme;
+    return Scaffold(
+      body: SingleChildScrollView(
+        child: BlocListener<LoginBloc, LoginState>(
+          listenWhen: (previous, current) => previous.status != current.status,
+          listener: (context, state) {
+            if (state.status == LoginStatus.error) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(
+                    state.errorMessage ?? 'Authentication Error',
+                    style: const TextStyle(color: ColorPalette.whiteColor),
+                  ),
+                  backgroundColor: ColorPalette.redColor,
+                  behavior: SnackBarBehavior.floating,
+                  duration: const Duration(milliseconds: 2000),
+                  elevation: 2,
+                ),
+              );
+            } else if (state.status == LoginStatus.success) {
+              commonUtils.navigateNextScreenAfterAuthenticate(context);
+            }
+          },
+          child: CustomTopBar(
+              centerTitle: false,
+              title: const CustomBackButton(),
+              bottomChildOnTopBar: _buildBottomChildOnTopBar(textTheme),
+              child: Column(children: [
+                const SizedBoxH3(),
+                const _EmailInput(),
+                const SizedBoxH2(),
+                _PasswordInput(
+                  showPassword: showPassword,
+                  onToggleShowPassword: _onToggleShowPassword,
+                ),
+                const SizedBoxH3(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    CustomCheckBox(
+                      text: 'Remember me',
+                      isChecked: rememberMe,
+                      onChecked: _onCheckedRememberMe,
+                    ),
+                    Text(
+                      'Forgot Password?',
+                      style: textTheme.bodyMedium,
+                    ),
+                  ],
+                ),
+                const SizedBoxH3(),
+                const _LoginButton(),
+                const SizedBoxH3(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    _buildGoogleButton(),
+                    _buildFacebookButton(),
+                  ],
+                ),
+                const SizedBoxH2(),
+                _buildNavigateSignUpScreen(textTheme),
+              ])),
+        ),
+      ),
+    );
+  }
+}
+
+class _LoginButton extends StatelessWidget {
+  const _LoginButton({
+    Key? key,
+  }) : super(key: key);
+
+  _signInWithEmailAndPassword(BuildContext context) {
+    context.read<LoginBloc>().add(const LoginSubmitted());
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return BlocBuilder<LoginBloc, LoginState>(
       buildWhen: (previous, current) => previous.status != current.status,
       builder: (context, state) {
         final isSubmitting = state.status == LoginStatus.submitting;
         return CustomButton(
-          onPressed: !isSubmitting ? onPressed : null,
+          onPressed:
+              !isSubmitting ? () => _signInWithEmailAndPassword(context) : null,
           height: 8.5.h,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -160,62 +245,6 @@ class _LoginScreenState extends State<LoginScreen> {
       },
     );
   }
-
-  @override
-  Widget build(BuildContext context) {
-    final ThemeData themeData = Theme.of(context);
-    final TextTheme textTheme = themeData.textTheme;
-    return Scaffold(
-      body: SingleChildScrollView(
-        child: CustomTopBar(
-            centerTitle: false,
-            title: const CustomBackButton(),
-            bottomChildOnTopBar: _buildBottomChildOnTopBar(textTheme),
-            child: Column(children: [
-              const SizedBoxH3(),
-              const _EmailInput(),
-              const SizedBoxH2(),
-              _PasswordInput(
-                showPassword: showPassword,
-                onToggleShowPassword: _onToggleShowPassword,
-              ),
-              const SizedBoxH3(),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  CustomCheckBox(
-                    text: 'Remember me',
-                    isChecked: rememberMe,
-                    onChecked: _onCheckedRememberMe,
-                  ),
-                  Text(
-                    'Forgot Password?',
-                    style: textTheme.bodyMedium,
-                  ),
-                ],
-              ),
-              const SizedBoxH3(),
-              _buildLoginButton(
-                onPressed: _signInWithEmailAndPassword,
-              ),
-              const SizedBoxH3(),
-              _buildDividerLogIn(
-                textTheme,
-              ),
-              const SizedBoxH3(),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  _buildGoogleButton(),
-                  _buildFacebookButton(),
-                ],
-              ),
-              const SizedBoxH2(),
-              _buildNavigateSignUpScreen(textTheme),
-            ])),
-      ),
-    );
-  }
 }
 
 class _EmailInput extends StatelessWidget {
@@ -225,16 +254,10 @@ class _EmailInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<LoginBloc, LoginState>(
-      buildWhen: (previous, current) => previous.email != current.email,
-      builder: (context, state) {
-        return CustomTextField(
-          onChanged: (value) => context.read<LoginBloc>().add(
-                LoginEmailChanged(email: value),
-              ),
-          hintText: 'Email',
-        );
-      },
+    return CustomTextField(
+      onChanged: (value) =>
+          getIt<LoginBloc>().add(LoginEmailChanged(email: value)),
+      hintText: 'Email',
     );
   }
 }
@@ -255,11 +278,8 @@ class _PasswordInput extends StatelessWidget {
       buildWhen: (previous, current) => previous.password != current.password,
       builder: (context, state) {
         return CustomTextField(
-          onChanged: (value) {
-            context.read<LoginBloc>().add(
-                  LoginPasswordChanged(password: value),
-                );
-          },
+          onChanged: (value) =>
+              getIt<LoginBloc>().add(LoginPasswordChanged(password: value)),
           hintText: 'Password',
           obscureText: !showPassword,
           suffixIcon: GestureDetector(

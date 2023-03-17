@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sizer/sizer.dart';
 import 'package:travel_app/screens/login/bloc/login_bloc.dart';
+import 'package:travel_app/screens/signup/bloc/sign_up_bloc.dart';
 import 'package:travel_app/themes/default.dart';
 
 void main() async {
@@ -45,6 +46,7 @@ class App extends StatelessWidget {
       providers: [
         BlocProvider(create: (_) => getIt<CommonBloc>()),
         BlocProvider(create: (_) => getIt<LoginBloc>()),
+        BlocProvider(create: (_) => getIt<SignUpBloc>()),
       ],
       child: BlocBuilder<CommonBloc, CommonState>(
         builder: (context, state) {

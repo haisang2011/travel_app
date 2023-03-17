@@ -1,18 +1,34 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 
-class User extends Equatable {
+class UserModel extends Equatable {
+  static const collectionName = 'user';
   final String id;
   final String? email;
   final String? photoURL;
   final String? displayName;
+  final String? phoneNumber;
 
-  const User({required this.id, this.email, this.photoURL, this.displayName});
+  const UserModel({
+    required this.id,
+    this.email,
+    this.photoURL,
+    this.displayName,
+    this.phoneNumber,
+  });
 
-  static const empty = User(id: '');
+  UserModel.fromDocumentSnapshot(Map<String, dynamic>? doc)
+      : id = doc!["id"],
+        email = doc["email"],
+        photoURL = doc["photoURL"],
+        displayName = doc["displayName"],
+        phoneNumber = doc["phoneNumber"];
 
-  bool get isEmpty => this == User.empty;
-  bool get isNotEmpty => this != User.empty;
+  static const empty = UserModel(id: '');
+
+  bool get isEmpty => this == UserModel.empty;
+  bool get isNotEmpty => this != UserModel.empty;
 
   @override
-  List<Object?> get props => [id, email, photoURL, displayName];
+  List<Object?> get props => [id, email, photoURL, displayName, phoneNumber];
 }

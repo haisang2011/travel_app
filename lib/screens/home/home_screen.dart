@@ -1,8 +1,12 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
+import 'package:travel_app/bloc/common_bloc/common_bloc.dart';
 import 'package:travel_app/constants/colors.dart';
 import 'package:travel_app/constants/dismension.dart';
 import 'package:travel_app/constants/images.dart';
@@ -58,11 +62,17 @@ class _HomeScreenState extends State<HomeScreen> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    'Hi, James!',
-                    style: TextStyle(
-                        fontSize: Sizes.fontXlSize,
-                        fontWeight: FontWeight.w500),
+                  BlocBuilder<CommonBloc, CommonState>(
+                    buildWhen: (previous, current) =>
+                        previous.user != current.user,
+                    builder: (context, state) {
+                      return Text(
+                        'Hi, ${state.user.displayName}!',
+                        style: TextStyle(
+                            fontSize: Sizes.fontXlSize,
+                            fontWeight: FontWeight.w500),
+                      );
+                    },
                   ),
                   SizedBox(
                     height: 1.5.h,
@@ -86,10 +96,18 @@ class _HomeScreenState extends State<HomeScreen> {
               ClipRRect(
                 borderRadius: const BorderRadius.all(Radius.circular(8)),
                 child: SizedBox(
-                    height: 5.h,
+                    height: 6.h,
                     width: 10.w,
-                    child: Image.asset(ImagePath.imageFirstPageView,
-                        fit: BoxFit.cover)),
+                    child: BlocBuilder<CommonBloc, CommonState>(
+                      buildWhen: (previous, current) =>
+                          previous.user != current.user,
+                      builder: (context, state) {
+                        return Image.network(
+                          state.user.photoURL.toString(),
+                          fit: BoxFit.cover,
+                        );
+                      },
+                    )),
               )
             ],
           ),
