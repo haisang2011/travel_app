@@ -9,10 +9,17 @@ class CustomPhoneNumberField extends StatelessWidget {
   final String? hintText;
   final Widget? prefixIcon;
   final BorderRadius? borderRadius;
+  final FormFieldValidator? validator;
+  final TextEditingController? controller;
 
-  const CustomPhoneNumberField(
-      {Key? key, this.hintText, this.borderRadius, this.prefixIcon})
-      : super(key: key);
+  const CustomPhoneNumberField({
+    Key? key,
+    this.hintText,
+    this.borderRadius,
+    this.prefixIcon,
+    this.validator,
+    this.controller,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,6 +31,8 @@ class CustomPhoneNumberField extends StatelessWidget {
           allowEndlessPhone: false,
         )
       ],
+      validator: validator,
+      controller: controller,
       keyboardType: TextInputType.phone,
       maxLength: 13,
       style: TextStyle(
@@ -49,6 +58,10 @@ class CustomPhoneNumberField extends StatelessWidget {
         filled: true,
         fillColor: ColorPalette.whiteColor,
         floatingLabelBehavior: FloatingLabelBehavior.auto,
+        errorStyle: TextStyle(
+          fontSize: Sizes.fontMdSize,
+          color: ColorPalette.errorColor,
+        ),
       ),
     );
   }

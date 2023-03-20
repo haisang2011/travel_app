@@ -1,13 +1,10 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:travel_app/data/dto/input_user_data.dart';
 import 'package:travel_app/data/models/user.dart';
 
 abstract class BaseAuthenticationRepository {
   Stream<UserModel> getCurrentUser();
-  Future<UserCredential?> signUp({
-    required String email,
-    required String password,
-  });
+  Future<UserCredential?> signUp(InputUserData input);
   Future<UserCredential?> signIn({
     required String email,
     required String password,

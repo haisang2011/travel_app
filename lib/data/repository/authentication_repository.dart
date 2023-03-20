@@ -2,8 +2,11 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart' as firebase_firestore;
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
+import 'package:travel_app/data/di/config.dart';
+import 'package:travel_app/data/dto/input_user_data.dart';
 import 'package:travel_app/data/models/user.dart';
 import 'package:travel_app/data/repository/base_authentication_repository.dart';
+import 'package:travel_app/data/repository/user_repository.dart';
 
 extension on firebase_auth.User {
   UserModel get toUser {
@@ -18,6 +21,8 @@ class AuthenticationRepository implements BaseAuthenticationRepository {
 
   final firebase_firestore.FirebaseFirestore _firebaseFirestore =
       firebase_firestore.FirebaseFirestore.instance;
+
+  final UserRepository userRepository = getIt<UserRepository>();
 
   AuthenticationRepository();
 
@@ -62,11 +67,20 @@ class AuthenticationRepository implements BaseAuthenticationRepository {
   }
 
   @override
-  Future<firebase_auth.UserCredential?> signUp(
-      {required String email, required String password}) async {
+  Future<firebase_auth.UserCredential?> signUp(InputUserData input) async {
     try {
-      firebase_auth.UserCredential userCredential = await _firebaseAuth
-          .createUserWithEmailAndPassword(email: email, password: password);
+      firebase_auth.UserCredential userCredential =
+          await _firebaseAuth.createUserWithEmailAndPassword(
+              email: input.email!, password: input.password!);
+
+      UserModel newUser = UserModel(
+        id: userCredential.user!.uid,
+        email: userCredential.user!.email,
+        displayName: input.displayName,
+        phoneNumber: input.phoneNumber,
+      );
+      await userRepository.addUser(newUser);
+
       return userCredential;
     } on firebase_auth.FirebaseAuthException catch (e) {
       throw firebase_auth.FirebaseAuthException(

@@ -47,7 +47,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         email: state.email,
         password: state.password,
       );
-      emit(state.copyWith(status: LoginStatus.success));
+      await Future.delayed(const Duration(milliseconds: 2000), () {
+        emit(state.copyWith(status: LoginStatus.success));
+      });
     } on FirebaseAuthException catch (error) {
       emit(state.copyWith(
         status: LoginStatus.error,

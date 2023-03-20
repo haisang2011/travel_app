@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 
 class UserModel extends Equatable {
@@ -23,6 +22,16 @@ class UserModel extends Equatable {
         photoURL = doc["photoURL"],
         displayName = doc["displayName"],
         phoneNumber = doc["phoneNumber"];
+
+  Map<String, Object?> toJson() {
+    return {
+      'id': id,
+      'email': email,
+      'photoURL': photoURL,
+      'displayName': displayName,
+      'phoneNumber': phoneNumber,
+    };
+  }
 
   static const empty = UserModel(id: '');
 
