@@ -1,6 +1,5 @@
 import 'package:travel_app/data/repository/authentication_repository.dart';
 import 'package:travel_app/bloc/common_bloc/common_bloc.dart';
-import 'package:travel_app/data/repository/location_repository.dart';
 import 'package:travel_app/data/source/local_storage/local_storage.dart';
 import 'package:travel_app/data/repository/hotel_repository.dart';
 import 'package:travel_app/routes/router.dart';
@@ -23,7 +22,6 @@ Future<void> initSingletons() async {
   getIt.registerLazySingleton<HotelRepository>(() => HotelRepository());
   getIt.registerLazySingleton<AuthenticationRepository>(
       () => AuthenticationRepository());
-  getIt.registerLazySingleton(() => LocationRepository());
 
   // Initialize blocs
   getIt.registerLazySingleton<CommonBloc>(
@@ -37,7 +35,6 @@ Future<void> initSingletons() async {
   getIt.registerLazySingleton<ResultHotelBloc>(
     () => ResultHotelBloc(
       hotelRepository: getIt<HotelRepository>(),
-      locationRepository: getIt<LocationRepository>(),
     ),
   );
   getIt.registerLazySingleton<DetailHotelBloc>(

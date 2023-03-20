@@ -71,9 +71,6 @@ class _HotelListState extends State<HotelList> {
           price: hotel.price,
           numberReviewers: hotel.numberReviewers,
           star: hotel.star,
-          distance: (state.currentLocation != null && hotel.location != null)
-              ? calculateDistance(state.currentLocation!, hotel.location!)
-              : null,
         );
       },
     );

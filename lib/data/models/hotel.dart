@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:geocoding/geocoding.dart';
 import 'package:travel_app/utils/common_utils.dart';
 
 enum HotelField {
@@ -24,7 +23,6 @@ class Hotel extends Equatable {
     this.price,
     this.star,
     this.images,
-    this.location,
   });
 
   static const collectionName = 'hotel';
@@ -35,7 +33,6 @@ class Hotel extends Equatable {
   final int? price;
   final double? star;
   final List<String>? images;
-  final Location? location;
 
   static Hotel fromJson(Map<String, dynamic> json) {
     return Hotel(
@@ -72,7 +69,6 @@ class Hotel extends Equatable {
       price: domain.price,
       star: domain.star,
       images: domain.images,
-      location: domain.location,
     );
   }
 
@@ -85,7 +81,6 @@ class Hotel extends Equatable {
       price: price,
       star: star,
       images: images,
-      location: location,
     );
   }
 
@@ -97,7 +92,6 @@ class Hotel extends Equatable {
     int? price,
     double? star,
     List<String>? images,
-    Location? location,
   }) {
     return Hotel(
       id: id ?? this.id,
@@ -107,7 +101,6 @@ class Hotel extends Equatable {
       price: price ?? this.price,
       star: star ?? this.star,
       images: images ?? this.images,
-      location: location ?? this.location,
     );
   }
 
@@ -120,6 +113,5 @@ class Hotel extends Equatable {
         price,
         star,
         images,
-        location,
       ];
 }

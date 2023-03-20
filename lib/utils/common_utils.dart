@@ -2,8 +2,6 @@ import 'dart:convert';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:math';
-
-import 'package:geocoding/geocoding.dart';
 import 'package:stack_trace/stack_trace.dart' as stacktrace;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
@@ -58,14 +56,13 @@ void navigateNextScreenAfterAuthenticate(BuildContext context) {
   }
 }
 
-double calculateDistance(Location source, Location target) {
-  var p = 0.017453292519943295;
-  var a = 0.5 -
-      cos((target.latitude - source.latitude) * p) / 2 +
-      cos(source.latitude * p) *
-          cos(target.latitude * p) *
-          (1 - cos((target.longitude - source.longitude) * p)) /
-          2;
-  return 12742 * asin(sqrt(a));
-}
-
+// double calculateDistance(Location source, Location target) {
+//   var p = 0.017453292519943295;
+//   var a = 0.5 -
+//       cos((target.latitude - source.latitude) * p) / 2 +
+//       cos(source.latitude * p) *
+//           cos(target.latitude * p) *
+//           (1 - cos((target.longitude - source.longitude) * p)) /
+//           2;
+//   return 12742 * asin(sqrt(a));
+// }

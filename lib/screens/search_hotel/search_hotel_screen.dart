@@ -39,10 +39,9 @@ class SearchHotelScreen extends StatelessWidget {
                 return Column(
                   children: [
                     SizedBox(height: 5.h),
-                    FilterTile(
+                    const FilterTile(
                       title: 'Destination',
-                      value: state.destination?.toString() ??
-                          constants.notChosenYet,
+                      value: constants.notChosenYet,
                       icon: Icons.location_on,
                       iconColor: ColorPalette.atomicTangerineColor,
                     ),

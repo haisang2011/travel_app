@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:geocoding/geocoding.dart';
 import 'package:sizer/sizer.dart';
 import 'package:travel_app/constants/colors.dart';
 import 'package:travel_app/constants/dismension.dart';
 import 'package:travel_app/constants/images.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:travel_app/data/di/config.dart';
-import 'package:travel_app/data/repository/location_repository.dart';
 import 'package:travel_app/widgets/custom_button.dart';
 import 'package:travel_app/widgets/dashed_divider.dart';
 import 'package:travel_app/routes/routes.dart' as routes;
@@ -21,7 +19,6 @@ class HotelCard extends StatelessWidget {
   final double? star;
   final int? numberReviewers;
   final int? price;
-  final double? distance;
 
   const HotelCard({
     required this.id,
@@ -31,7 +28,6 @@ class HotelCard extends StatelessWidget {
     this.star,
     this.numberReviewers,
     this.price,
-    this.distance,
     super.key,
   });
 
@@ -110,20 +106,16 @@ class HotelCard extends StatelessWidget {
                     ),
                     children: [
                       Text(
-                        address == null
-                            ? '--'
-                            : '$address${distance != null ? " - " : ""}',
+                        address == null ? '--' : '$address - ',
                         style: Theme.of(context).textTheme.bodySmall,
                       ),
-                      if (distance != null)
-                        Text(
-                          '${distance! < 1000 ? '${(distance! * 1000).toStringAsFixed(1)} m' : '${distance!.toStringAsFixed(1)} km'} from destination',
-                          overflow: TextOverflow.ellipsis,
-                          style:
-                              Theme.of(context).textTheme.bodySmall?.copyWith(
-                                    color: ColorPalette.fontGrayColor,
-                                  ),
-                        ),
+                      Text(
+                        '123 km from destination',
+                        overflow: TextOverflow.ellipsis,
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                              color: ColorPalette.fontGrayColor,
+                            ),
+                      ),
                     ],
                   ),
                   _buildIconRow(
@@ -177,22 +169,7 @@ class HotelCard extends StatelessWidget {
                       Expanded(
                         child: CustomButton(
                           height: 6.5.h,
-                          onPressed: () async {
-                            final currentLocation =
-                                await getIt<LocationRepository>()
-                                    .getCurrentLocation();
-                            printTest(
-                                'Current location: ${currentLocation?.latitude}, ${currentLocation?.longitude}');
-                            final targetLocation = await getIt<
-                                    LocationRepository>()
-                                .getNearestLocation(
-                                    'Williams Avenue, Whitewater, Oregon, Ecuador');
-                            printTest(
-                                'Selected location: ${targetLocation?.latitude}, ${targetLocation?.longitude}');
-                            final distance = calculateDistance(
-                                currentLocation!, targetLocation!);
-                            printTest('Distance: $distance km');
-                          },
+                          onPressed: () async {},
                           child: Text(
                             'Book a room',
                             style: Theme.of(context)

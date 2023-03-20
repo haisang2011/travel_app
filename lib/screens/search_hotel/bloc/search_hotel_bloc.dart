@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:geocoding/geocoding.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:travel_app/utils/extensions/pickerdaterange_extension.dart';
 
