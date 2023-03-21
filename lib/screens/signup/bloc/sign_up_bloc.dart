@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:travel_app/data/dto/input_user_data.dart';
 import 'package:travel_app/data/repository/authentication_repository.dart';
 
 part 'sign_up_enum.dart';
@@ -32,13 +33,16 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
 
   void _onSignUpSubmitted(
       SignUpSubmitted event, Emitter<SignUpState> emit) async {
+    inspect(state);
     emit(state.copyWith(status: SignUpStatus.submitting));
     try {
-      // Using Future.delayed to test status
-      await authenticationRepository.signUp(
+      InputUserData input = InputUserData(
         email: state.email,
         password: state.password,
+        displayName: state.name,
+        phoneNumber: state.phoneNumber,
       );
+      await authenticationRepository.signUp(input);
       emit(state.copyWith(status: SignUpStatus.success));
     } on FirebaseAuthException catch (error) {
       emit(state.copyWith(

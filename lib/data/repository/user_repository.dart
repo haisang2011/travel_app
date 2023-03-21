@@ -1,16 +1,27 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:travel_app/data/models/user.dart';
 
-class UserRepository {
-  final CollectionReference _userCollectionReference;
+abstract class BaseUserRepository {
+  Future<void> addUser(UserModel user);
+}
 
-  UserRepository({
-    CollectionReference? userCollectionReference,
-  }) : _userCollectionReference = userCollectionReference ??
-            FirebaseFirestore.instance.collection('users');
+class UserRepository extends BaseUserRepository {
+  late CollectionReference<UserModel> collection;
 
-  Future<void> getCurrentData(String documentId) async {
-    try {
-      _userCollectionReference.doc(documentId).get();
-    } catch (_) {}
+  UserRepository() {
+    collection = FirebaseFirestore.instance
+        .collection(UserModel.collectionName)
+        .withConverter<UserModel>(
+          fromFirestore: (snapshot, _) =>
+              UserModel.fromDocumentSnapshot(snapshot.data()!),
+          toFirestore: (user, _) => user.toJson(),
+        );
+  }
+
+  @override
+  Future<void> addUser(UserModel user) async {
+    await collection.add(user);
   }
 }

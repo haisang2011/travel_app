@@ -14,6 +14,7 @@ class CustomTextField extends StatelessWidget {
   final TextInputType keyboardType;
   final TextEditingController? controller;
   final ValueChanged<String>? onChanged;
+  final FormFieldValidator? validator;
 
   const CustomTextField({
     Key? key,
@@ -25,6 +26,7 @@ class CustomTextField extends StatelessWidget {
     this.onChanged,
     this.keyboardType = TextInputType.text,
     this.obscureText = false,
+    this.validator,
   }) : super(key: key);
 
   @override
@@ -33,6 +35,7 @@ class CustomTextField extends StatelessWidget {
         this.borderRadius ?? BorderRadius.circular(Sizes.radiusSmSize);
     return TextFormField(
       controller: controller,
+      validator: validator,
       obscureText: obscureText,
       keyboardType: keyboardType,
       onChanged: onChanged,
@@ -70,6 +73,10 @@ class CustomTextField extends StatelessWidget {
         floatingLabelBehavior: FloatingLabelBehavior.auto,
         suffixIcon: suffixIcon,
         suffixIconColor: ColorPalette.raisinBlackColor,
+        errorStyle: TextStyle(
+          fontSize: Sizes.fontMdSize,
+          color: ColorPalette.errorColor,
+        ),
       ),
     );
   }

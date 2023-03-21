@@ -30,6 +30,7 @@ class ColorPalette {
   static const swansDownColor = Color(0xffD9EDEB);
   static const raisinBlackColor = Color(0xff232323);
   static const blueColor = Color(0xff3C5A9A);
+  static const errorColor = Color(0xffF93535);
 }
 
 class Gradients {

@@ -16,6 +16,7 @@ import 'package:travel_app/screens/signup/bloc/sign_up_bloc.dart';
 import 'package:travel_app/screens/result_hotel/bloc/result_hotel_bloc.dart';
 import 'package:travel_app/screens/search_hotel/bloc/search_hotel_bloc.dart';
 import 'package:travel_app/themes/default.dart';
+import 'package:travel_app/data/source/firebase/utils.dart';
 
 void main() async {
   HttpOverrides.global = AppHttpOverrides();

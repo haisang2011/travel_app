@@ -15,6 +15,7 @@ import 'package:travel_app/data/di/config.dart';
 import 'package:travel_app/data/source/local_storage/cache_keys.dart';
 import 'package:travel_app/data/source/local_storage/local_storage.dart';
 import 'package:travel_app/screens/login/bloc/login_bloc.dart';
+import 'package:travel_app/screens/login/login_validator.dart';
 import 'package:travel_app/widgets/app_button.dart';
 import 'package:travel_app/widgets/custom_back_button.dart';
 import 'package:travel_app/widgets/custom_button.dart';
@@ -34,17 +35,11 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   bool rememberMe = false;
-  bool showPassword = false;
+  final _formKey = GlobalKey<FormState>();
 
   _onCheckedRememberMe() {
     setState(() {
       rememberMe = !rememberMe;
-    });
-  }
-
-  _onToggleShowPassword() {
-    setState(() {
-      showPassword = !showPassword;
     });
   }
 
@@ -171,44 +166,46 @@ class _LoginScreenState extends State<LoginScreen> {
           },
           child: CustomTopBar(
               centerTitle: false,
-              title: const CustomBackButton(),
+              // title: const CustomBackButton(),
               bottomChildOnTopBar: _buildBottomChildOnTopBar(textTheme),
-              child: Column(children: [
-                const SizedBoxH3(),
-                const _EmailInput(),
-                const SizedBoxH2(),
-                _PasswordInput(
-                  showPassword: showPassword,
-                  onToggleShowPassword: _onToggleShowPassword,
-                ),
-                const SizedBoxH3(),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    CustomCheckBox(
-                      text: 'Remember me',
-                      isChecked: rememberMe,
-                      onChecked: _onCheckedRememberMe,
-                    ),
-                    Text(
-                      'Forgot Password?',
-                      style: textTheme.bodyMedium,
-                    ),
-                  ],
-                ),
-                const SizedBoxH3(),
-                const _LoginButton(),
-                const SizedBoxH3(),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    _buildGoogleButton(),
-                    _buildFacebookButton(),
-                  ],
-                ),
-                const SizedBoxH2(),
-                _buildNavigateSignUpScreen(textTheme),
-              ])),
+              child: Form(
+                key: _formKey,
+                child: Column(children: [
+                  const SizedBoxH3(),
+                  const _EmailInput(),
+                  const SizedBoxH2(),
+                  const _PasswordInput(),
+                  const SizedBoxH3(),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      CustomCheckBox(
+                        text: 'Remember me',
+                        isChecked: rememberMe,
+                        onChecked: _onCheckedRememberMe,
+                      ),
+                      Text(
+                        'Forgot Password?',
+                        style: textTheme.bodyMedium,
+                      ),
+                    ],
+                  ),
+                  const SizedBoxH3(),
+                  _LoginButton(formKey: _formKey),
+                  const SizedBoxH3(),
+                  _buildDividerLogIn(textTheme),
+                  const SizedBoxH3(),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      _buildGoogleButton(),
+                      _buildFacebookButton(),
+                    ],
+                  ),
+                  const SizedBoxH2(),
+                  _buildNavigateSignUpScreen(textTheme),
+                ]),
+              )),
         ),
       ),
     );
@@ -216,9 +213,9 @@ class _LoginScreenState extends State<LoginScreen> {
 }
 
 class _LoginButton extends StatelessWidget {
-  const _LoginButton({
-    Key? key,
-  }) : super(key: key);
+  final GlobalKey<FormState> formKey;
+
+  const _LoginButton({Key? key, required this.formKey}) : super(key: key);
 
   _signInWithEmailAndPassword(BuildContext context) {
     context.read<LoginBloc>().add(const LoginSubmitted());
@@ -231,8 +228,11 @@ class _LoginButton extends StatelessWidget {
       builder: (context, state) {
         final isSubmitting = state.status == LoginStatus.submitting;
         return CustomButton(
-          onPressed:
-              !isSubmitting ? () => _signInWithEmailAndPassword(context) : null,
+          onPressed: () {
+            if (formKey.currentState!.validate()) {
+              !isSubmitting ? _signInWithEmailAndPassword(context) : null;
+            }
+          },
           height: 8.5.h,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -247,48 +247,92 @@ class _LoginButton extends StatelessWidget {
   }
 }
 
-class _EmailInput extends StatelessWidget {
+class _EmailInput extends StatefulWidget {
   const _EmailInput({
     Key? key,
   }) : super(key: key);
 
   @override
+  State<_EmailInput> createState() => _EmailInputState();
+}
+
+class _EmailInputState extends State<_EmailInput> {
+  final TextEditingController _emailController = TextEditingController();
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return CustomTextField(
-      onChanged: (value) =>
-          getIt<LoginBloc>().add(LoginEmailChanged(email: value)),
-      hintText: 'Email',
+    return Focus(
+      onFocusChange: (hasFocus) {
+        if (!hasFocus) {
+          getIt<LoginBloc>()
+              .add(LoginEmailChanged(email: _emailController.text));
+        }
+      },
+      child: CustomTextField(
+        hintText: 'Email',
+        controller: _emailController,
+        validator: (value) => LoginValidator.validateEmail(value),
+      ),
     );
   }
 }
 
-class _PasswordInput extends StatelessWidget {
+class _PasswordInput extends StatefulWidget {
   const _PasswordInput({
     Key? key,
-    required this.onToggleShowPassword,
-    required this.showPassword,
   }) : super(key: key);
 
-  final VoidCallback onToggleShowPassword;
-  final bool showPassword;
+  @override
+  State<_PasswordInput> createState() => _PasswordInputState();
+}
+
+class _PasswordInputState extends State<_PasswordInput> {
+  final TextEditingController _passwordController = TextEditingController();
+
+  bool _showPassword = false;
+  _onToggleShowPassword() {
+    setState(() {
+      _showPassword = !_showPassword;
+    });
+  }
+
+  @override
+  void dispose() {
+    _passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<LoginBloc, LoginState>(
       buildWhen: (previous, current) => previous.password != current.password,
       builder: (context, state) {
-        return CustomTextField(
-          onChanged: (value) =>
-              getIt<LoginBloc>().add(LoginPasswordChanged(password: value)),
-          hintText: 'Password',
-          obscureText: !showPassword,
-          suffixIcon: GestureDetector(
-            onTap: onToggleShowPassword,
-            child: Icon(
-              !showPassword
-                  ? FontAwesomeIcons.solidEyeSlash
-                  : FontAwesomeIcons.solidEye,
-              color: ColorPalette.fontGreyColor,
+        return Focus(
+          onFocusChange: (hasFocus) {
+            if (!hasFocus) {
+              getIt<LoginBloc>().add(
+                  LoginPasswordChanged(password: _passwordController.text));
+            }
+          },
+          child: CustomTextField(
+            controller: _passwordController,
+            validator: (value) => LoginValidator.validatePassword(value),
+            hintText: 'Password',
+            obscureText: !_showPassword,
+            suffixIcon: GestureDetector(
+              onTap: _onToggleShowPassword,
+              child: Icon(
+                _showPassword
+                    ? FontAwesomeIcons.solidEye
+                    : FontAwesomeIcons.solidEyeSlash,
+                color: ColorPalette.fontGreyColor,
+              ),
             ),
           ),
         );
