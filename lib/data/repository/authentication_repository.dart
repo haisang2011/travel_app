@@ -7,6 +7,7 @@ import 'package:travel_app/data/dto/input_user_data.dart';
 import 'package:travel_app/data/models/user.dart';
 import 'package:travel_app/data/repository/base_authentication_repository.dart';
 import 'package:travel_app/data/repository/user_repository.dart';
+import 'package:travel_app/utils/common_utils.dart';
 
 extension on firebase_auth.User {
   UserModel get toUser {
@@ -86,5 +87,31 @@ class AuthenticationRepository implements BaseAuthenticationRepository {
       throw firebase_auth.FirebaseAuthException(
           code: e.code, message: e.message);
     }
+  }
+
+  Future<void> resetPassword() async {
+    _firebaseAuth.verifyPhoneNumber(
+      phoneNumber: '84375376508',
+      verificationCompleted: (firebase_auth.PhoneAuthCredential credential) {
+        printTest('---START verificationCompleted---');
+        inspect(credential);
+        printTest('---END verificationCompleted---');
+      },
+      verificationFailed: (firebase_auth.FirebaseAuthException e) {
+        printTest('---START verificationFailed---');
+        inspect(e);
+        printTest('---END verificationFailed---');
+      },
+      codeSent: (String verificationId, int? resendToken) {
+        printTest('---START codeSent---');
+        inspect(verificationId);
+        printTest('---END codeSent---');
+      },
+      codeAutoRetrievalTimeout: (String verificationId) {
+        printTest('---START codeAutoRetrievalTimeout---');
+        inspect(verificationId);
+        printTest('---END codeAutoRetrievalTimeout---');
+      },
+    );
   }
 }

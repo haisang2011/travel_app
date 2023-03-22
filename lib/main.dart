@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sizer/sizer.dart';
 import 'package:travel_app/screens/detail_hotel/bloc/detail_hotel_bloc.dart';
+import 'package:travel_app/screens/home/bloc/home_bloc.dart';
 import 'package:travel_app/screens/login/bloc/login_bloc.dart';
 import 'package:travel_app/screens/signup/bloc/sign_up_bloc.dart';
 import 'package:travel_app/screens/result_hotel/bloc/result_hotel_bloc.dart';
@@ -32,7 +33,7 @@ void main() async {
   // Init LocalStorage with SharedPreferences
   await getIt<LocalStorage>().initSharedPreferences();
 
-  // importFirebaseFromJson('assets/import_data/user.json', 'user');
+  // importFirebaseFromJson('assets/import_data/destination.json', 'destination');
 
   // Set PreferredOrientations
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]).then(
@@ -52,7 +53,8 @@ class App extends StatelessWidget {
         BlocProvider(create: (_) => getIt<SignUpBloc>()),
         BlocProvider(create: (_) => getIt<ResultHotelBloc>()),
         BlocProvider(create: (_) => getIt<DetailHotelBloc>()),
-        BlocProvider(create: (_) => getIt<SearchHotelBloc>())
+        BlocProvider(create: (_) => getIt<SearchHotelBloc>()),
+        BlocProvider(create: (_) => getIt<HomeBloc>()),
       ],
       child: BlocBuilder<CommonBloc, CommonState>(
         builder: (context, state) {

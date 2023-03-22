@@ -3,6 +3,7 @@ import 'package:travel_app/routes/page_route_transition.dart';
 import 'package:travel_app/screens/detail_hotel/detail_hotel_screen.dart';
 import 'package:travel_app/screens/home/home_screen.dart';
 import 'package:travel_app/screens/login/login_screen.dart';
+import 'package:travel_app/screens/reset_password/reset_password.screen.dart';
 import 'package:travel_app/screens/result_hotel/result_hotel_screen.dart';
 import 'package:travel_app/screens/introdution/intro_screen.dart';
 import 'package:travel_app/screens/search_hotel/search_hotel_screen.dart';
@@ -61,6 +62,9 @@ class AppRouter {
       case routes.signUpRoute:
         return PageRouteTransition(
             direction: AxisDirection.left, child: const SignUpScreen());
+      case routes.resetPasswordRoute:
+        return PageRouteTransition(
+            direction: AxisDirection.left, child: const ResetPassword());
       default:
         return null;
     }

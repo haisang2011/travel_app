@@ -33,7 +33,6 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
 
   void _onSignUpSubmitted(
       SignUpSubmitted event, Emitter<SignUpState> emit) async {
-    inspect(state);
     emit(state.copyWith(status: SignUpStatus.submitting));
     try {
       InputUserData input = InputUserData(

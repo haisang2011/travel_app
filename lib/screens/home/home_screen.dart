@@ -2,7 +2,6 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
@@ -11,11 +10,13 @@ import 'package:travel_app/constants/colors.dart';
 import 'package:travel_app/constants/dismension.dart';
 import 'package:travel_app/constants/images.dart';
 import 'package:travel_app/data/di/config.dart';
+import 'package:travel_app/screens/home/widgets/destination_list.dart';
 import 'package:travel_app/widgets/custom_button.dart';
 import 'package:travel_app/widgets/custom_text_field.dart';
 import 'package:travel_app/widgets/custom_top_bar.dart';
 import 'package:sizer/sizer.dart';
 import 'package:travel_app/routes/routes.dart' as routes;
+import 'package:cached_network_image/cached_network_image.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -118,8 +119,11 @@ class _HomeScreenState extends State<HomeScreen> {
                               fit: BoxFit.cover,
                             );
                           } else {
-                            return Image.network(
-                              state.user.photoURL.toString(),
+                            return CachedNetworkImage(
+                              placeholder: (context, url) => const Center(
+                                child: CircularProgressIndicator(),
+                              ),
+                              imageUrl: state.user.photoURL!,
                               fit: BoxFit.cover,
                             );
                           }
@@ -202,60 +206,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 SizedBox(
                   height: 40.h,
                   width: double.infinity,
-                  child: MasonryGridView.count(
-                    crossAxisCount: 2,
-                    mainAxisSpacing: 2.5.h,
-                    crossAxisSpacing: 2.5.h,
-                    itemCount: 5,
-                    padding: EdgeInsets.zero,
-                    itemBuilder: (context, index) => Stack(
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(20),
-                          child: Image.network(
-                              "https://source.unsplash.com/random?sig=$index"),
-                        ),
-                        Positioned(
-                            left: 10,
-                            bottom: 10,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Text(
-                                  'Korea',
-                                  style: TextStyle(
-                                      color: ColorPalette.whiteColor,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w500),
-                                ),
-                                SizedBox(
-                                  height: 1.h,
-                                ),
-                                Container(
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 6, horizontal: 8),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(4.0),
-                                    color: ColorPalette.whiteColor
-                                        .withOpacity(0.4),
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      Icon(FontAwesomeIcons.solidStar,
-                                          color: ColorPalette.yellowColor,
-                                          size: 12.sp),
-                                      const SizedBox(
-                                        width: 8,
-                                      ),
-                                      const Text('4.5'),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ))
-                      ],
-                    ),
-                  ),
+                  child: const DestinationList(),
                 )
               ],
             ),

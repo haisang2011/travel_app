@@ -43,6 +43,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   ) async {
     emit(state.copyWith(status: LoginStatus.submitting));
     try {
+      inspect(state);
       await authenticationRepository.signIn(
         email: state.email,
         password: state.password,

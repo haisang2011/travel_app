@@ -22,4 +22,6 @@ class ImagePath {
   static const imageTopLeftOval = 'assets/images/topLeftOval.png';
   static const imagebottomRightOval = 'assets/images/bottomRightOval.png';
   static const imagePlaceHolder = 'assets/images/place_holder.png';
+  static const imageDestinationThumbnail =
+      'assets/images/destination_placeholder.jpg';
 }

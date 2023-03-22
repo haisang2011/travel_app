@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -36,6 +37,23 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   bool rememberMe = false;
   final _formKey = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    super.initState();
+    _onCheckRememberMeExistOnLocalStorage();
+  }
+
+  _onCheckRememberMeExistOnLocalStorage() {
+    String? rememberMeStringData =
+        getIt<LocalStorage>().getString(key: CacheKey.rememberMe);
+
+    if (rememberMeStringData != null) {
+      setState(() {
+        rememberMe = true;
+      });
+    }
+  }
 
   _onCheckedRememberMe() {
     setState(() {
@@ -161,6 +179,19 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               );
             } else if (state.status == LoginStatus.success) {
+              // Check you want to auto fill email, password fields for next time
+              if (rememberMe) {
+                Map<String, String> payload = {
+                  'email': state.email,
+                  'password': state.password
+                };
+                getIt<LocalStorage>().putString(
+                  key: CacheKey.rememberMe,
+                  value: json.encode(payload),
+                );
+              } else {
+                getIt<LocalStorage>().remove(key: CacheKey.rememberMe);
+              }
               commonUtils.navigateNextScreenAfterAuthenticate(context);
             }
           },
@@ -257,7 +288,24 @@ class _EmailInput extends StatefulWidget {
 }
 
 class _EmailInputState extends State<_EmailInput> {
-  final TextEditingController _emailController = TextEditingController();
+  late TextEditingController _emailController;
+
+  @override
+  void initState() {
+    super.initState();
+    _emailController = TextEditingController();
+    _onCheckRememberMeSavedLocalstorage();
+  }
+
+  _onCheckRememberMeSavedLocalstorage() async {
+    String? rememberMeStringData =
+        getIt<LocalStorage>().getString(key: CacheKey.rememberMe);
+    if (rememberMeStringData != null) {
+      Map<String, dynamic> parsedData = jsonDecode(rememberMeStringData);
+      getIt<LoginBloc>().add(LoginEmailChanged(email: parsedData["email"]!));
+      _emailController.text = parsedData["email"]!;
+    }
+  }
 
   @override
   void dispose() {
@@ -293,7 +341,25 @@ class _PasswordInput extends StatefulWidget {
 }
 
 class _PasswordInputState extends State<_PasswordInput> {
-  final TextEditingController _passwordController = TextEditingController();
+  late TextEditingController _passwordController;
+
+  @override
+  void initState() {
+    super.initState();
+    _passwordController = TextEditingController();
+    _onCheckRememberMeSavedLocalstorage();
+  }
+
+  _onCheckRememberMeSavedLocalstorage() async {
+    String? rememberMeStringData =
+        getIt<LocalStorage>().getString(key: CacheKey.rememberMe);
+    if (rememberMeStringData != null) {
+      Map<String, dynamic> parsedData = jsonDecode(rememberMeStringData);
+      getIt<LoginBloc>()
+          .add(LoginPasswordChanged(password: parsedData["password"]!));
+      _passwordController.text = parsedData["password"]!;
+    }
+  }
 
   bool _showPassword = false;
   _onToggleShowPassword() {

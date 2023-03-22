@@ -27,14 +27,12 @@ class CustomPhoneNumberField extends StatelessWidget {
         this.borderRadius ?? BorderRadius.circular(Sizes.radiusSmSize);
     return TextFormField(
       inputFormatters: [
-        PhoneInputFormatter(
-          allowEndlessPhone: false,
-        )
+        PhoneInputFormatter(allowEndlessPhone: false, defaultCountryCode: 'VN')
       ],
       validator: validator,
       controller: controller,
       keyboardType: TextInputType.phone,
-      maxLength: 13,
+      maxLength: 15,
       style: TextStyle(
           fontSize: Sizes.fontLgSize,
           color: ColorPalette.fontBlackColor,
